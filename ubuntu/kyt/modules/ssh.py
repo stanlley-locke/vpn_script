@@ -1,5 +1,41 @@
 from kyt import *
 
+def _ssh_msg(user, pw, later_str):
+	slowdns = f"\n**» Host Slowdns     :** `{HOST}`" if HOST else ""
+	pubkey  = f"\n**» Pub Key          :** `{PUB}`"  if PUB  else ""
+	dns_port = "\n**» Port DNS         :** `443, 53 ,22`" if HOST else ""
+	return f"""**━━━━━━━━━━━━━━━━━**
+**⚡ SSH OVPN ACCOUNT ⚡**
+**━━━━━━━━━━━━━━━━━**
+**» Username         :** `{user}`
+**» Password         :** `{pw}`
+**━━━━━━━━━━━━━━━━━**
+**» Host             :** `{DOMAIN}`{slowdns}{pubkey}
+**» Port OpenSSH     :** `443, 80, 22`{dns_port}
+**» Port Dropbear    :** `443, 109`
+**» Port Dropbear WS :** `443, 109`
+**» Port SSH WS      :** `80, 8080, 8081-9999`
+**» Port SSH SSL WS  :** `443`
+**» Port SSL/TLS     :** `222-1000`
+**» Port OVPN WS SSL :** `443`
+**» Port OVPN SSL    :** `443`
+**» Port OVPN TCP    :** `443, 1194`
+**» Port OVPN UDP    :** `2200`
+**» Proxy Squid      :** `3128`
+**» BadVPN UDP       :** `7100, 7300, 7300`
+**━━━━━━━━━━━━━━━━━**
+**» Payload WSS      :** `GET wss://{DOMAIN}/ HTTP/1.1[crlf]Host: {DOMAIN}[crlf]Upgrade: websocket[crlf][crlf]`
+**» HTTP Custom      :** `httpc-export-v5 profile-v5-production-ssh {user}`
+**━━━━━━━━━━━━━━━━━**
+**» OpenVPN WS SSL   :** `https://{DOMAIN}:81/ws-ssl.ovpn`
+**» OpenVPN SSL      :** `https://{DOMAIN}:81/ssl.ovpn`
+**» OpenVPN TCP      :** `https://{DOMAIN}:81/tcp.ovpn`
+**» OpenVPN UDP      :** `https://{DOMAIN}:81/udp.ovpn`
+**━━━━━━━━━━━━━━━━━**
+**» Save Link Account:** `https://{DOMAIN}:81/ssh-{user}.txt`
+**» Expired Until:** `{later_str}`
+**» 🤖@stanlley-locke**"""
+
 #DELETESSH
 @bot.on(events.CallbackQuery(data=b'delete-ssh'))
 async def delete_ssh(event):
@@ -74,42 +110,7 @@ Button.inline(" 60 Day ","60")]])
 		else:
 			today = DT.date.today()
 			later = today + DT.timedelta(days=int(exp))
-			msg = f"""
-**━━━━━━━━━━━━━━━━━**
-**⚡ SSH OVPN ACCOUNT ⚡**
-**━━━━━━━━━━━━━━━━━**
-**» Username         :** `{user.strip()}`
-**» Password         :** `{pw.strip()}`
-**━━━━━━━━━━━━━━━━━**
-**» Host             :** `{DOMAIN}`
-**» Host Slowdns     :** `{HOST}`
-**» Pub Key          :** `{PUB}`
-**» Port OpenSSH     :** `443, 80, 22`
-**» Port DNS         :** `443, 53 ,22`
-**» Port Dropbear    :** `443, 109`
-**» Port Dropbear WS :** `443, 109`
-**» Port SSH WS      :** `80, 8080, 8081-9999 `
-**» Port SSH SSL WS  :** `443`
-**» Port SSL/TLS     :** `222-1000`
-**» Port OVPN WS SSL :** `443`
-**» Port OVPN SSL    :** `443`
-**» Port OVPN TCP    :** `443, 1194`
-**» Port OVPN UDP    :** `2200`
-**» Proxy Squid      :** `3128`
-**» BadVPN UDP       :** `7100, 7300, 7300`
-**━━━━━━━━━━━━━━━━━**
-**» Payload WSS      :** `GET wss://{DOMAIN}/ HTTP/1.1[crlf]Host: {DOMAIN}[crlf]Upgrade: websocket[crlf][crlf]`
-**━━━━━━━━━━━━━━━━━**
-**» OpenVPN WS SSL   :** `https://{DOMAIN}:81/ws-ssl.ovpn`
-**» OpenVPN SSL      :** `https://{DOMAIN}:81/ssl.ovpn`
-**» OpenVPN TCP      :** `https://{DOMAIN}:81/tcp.ovpn`
-**» OpenVPN UDP      :** `https://{DOMAIN}:81/udp.ovpn`
-**━━━━━━━━━━━━━━━━━**
-**» Save Link Account:** `https://{DOMAIN}:81/ssh-{user.strip()}.txt`
-**» Expired Until:** `{later}`
-**» 🤖@stanlley-locke**
-"""
-			await event.respond(msg)
+			await event.respond(_ssh_msg(user.strip(), pw.strip(), str(later)))
 	chat = event.chat_id
 	sender = await event.get_sender()
 	a = valid(str(sender.id))
@@ -186,42 +187,7 @@ Button.inline(" 60 Menit ","60")]])
 		else:
 			#today = DT.date.today()
 			#later = today + DT.timedelta(days=int(exp))
-			msg = f"""
-**━━━━━━━━━━━━━━━━━**
-**⚡ SSH OVPN ACCOUNT ⚡**
-**━━━━━━━━━━━━━━━━━**
-**» Username         :** `{user.strip()}`
-**» Password         :** `{pw.strip()}`
-**━━━━━━━━━━━━━━━━━**
-**» Host             :** `{DOMAIN}`
-**» Host Slowdns     :** `{HOST}`
-**» Pub Key          :** `{PUB}`
-**» Port OpenSSH     :** `443, 80, 22`
-**» Port DNS         :** `443, 53 ,22`
-**» Port Dropbear    :** `443, 109`
-**» Port Dropbear WS :** `443, 109`
-**» Port SSH WS      :** `80, 8080, 8081-9999 `
-**» Port SSH SSL WS  :** `443`
-**» Port SSL/TLS     :** `222-1000`
-**» Port OVPN WS SSL :** `443`
-**» Port OVPN SSL    :** `443`
-**» Port OVPN TCP    :** `443, 1194`
-**» Port OVPN UDP    :** `2200`
-**» Proxy Squid      :** `3128`
-**» BadVPN UDP       :** `7100, 7300, 7300`
-**━━━━━━━━━━━━━━━━━**
-**» Payload WSS      :** `GET wss://{DOMAIN}/ HTTP/1.1[crlf]Host: {DOMAIN}[crlf]Upgrade: websocket[crlf][crlf]`
-**━━━━━━━━━━━━━━━━━**
-**» OpenVPN WS SSL   :** `https://{DOMAIN}:81/ws-ssl.ovpn`
-**» OpenVPN SSL      :** `https://{DOMAIN}:81/ssl.ovpn`
-**» OpenVPN TCP      :** `https://{DOMAIN}:81/tcp.ovpn`
-**» OpenVPN UDP      :** `https://{DOMAIN}:81/udp.ovpn`
-**━━━━━━━━━━━━━━━━━**
-**» Save Link Account:** `https://{DOMAIN}:81/ssh-{user.strip()}.txt`
-**» Expired Until:** `{exp} Minutes`
-**» 🤖@stanlley-locke**
-"""
-			await event.respond(msg)
+			await event.respond(_ssh_msg(user.strip(), pw.strip(), f"{exp} Minutes"))
 	chat = event.chat_id
 	sender = await event.get_sender()
 	a = valid(str(sender.id))
