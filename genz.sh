@@ -238,7 +238,8 @@ print_install "Installing SSL On Domain"
     mkdir /root/.acme.sh
     systemctl stop $STOPWEBSERVER
     systemctl stop nginx
-    wget -qO /root/.acme.sh/acme.sh https://acme-install.netlify.app/acme.sh || wget -qO /root/.acme.sh/acme.sh https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh -o /root/.acme.sh/acme.sh
+    wget -qO /root/.acme.sh/acme.sh https://acme-install.netlify.app/acme.sh 2>/dev/null || \
+        wget -qO /root/.acme.sh/acme.sh https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh
     chmod +x /root/.acme.sh/acme.sh
     /root/.acme.sh/acme.sh --upgrade --auto-upgrade
     /root/.acme.sh/acme.sh --set-default-ca --server letsencrypt
