@@ -1,0 +1,9 @@
+[
+  {"type":"field","inboundTag":["api"],"outboundTag":"api"},
+  {"type":"field","outboundTag":"block","protocol":["bittorrent"]},
+  {"type":"field","outboundTag":"reject","domain":["geosite:category-ads-all"]},
+  {"type":"field","outboundTag":"proxy","ip":["geoip:us","geoip:ca","geoip:telegram","geoip:google","geoip:netflix","geoip:cloudflare"]},
+  {"type":"field","outboundTag":"direct","ip":["geoip:private","geoip:cn"]},
+  {"type":"field","outboundTag":"direct","domain":["geosite:cn","geosite:private"]},
+  {"type":"field","outboundTag":"proxy","network":"tcp,udp"}
+]

@@ -56,7 +56,7 @@ echo -e ""
 read -p " Select menu :  "  opt
 echo -e   ""
 case $opt in
-01 | 1) clear ; wget -q "${VPN_REPO:-https://raw.githubusercontent.com/stanlley_locke/vpn_script/main}/kyt.sh" && chmod +x kyt.sh && ./kyt.sh ;;
+01 | 1) clear ; wget -q "${VPN_REPO:-https://raw.githubusercontent.com/stanlley-locke/vpn_script/main}/kyt.sh" && chmod +x kyt.sh && ./kyt.sh ;;
 02 | 2) clear ; hapus-bot ;;
 03 | 3) clear ; stop-bot ;;
 04 | 4) clear ; restart-bot ;;

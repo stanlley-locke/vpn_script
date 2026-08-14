@@ -1,5 +1,5 @@
 #!/bin/bash
-# Cloudflare DNS helper — stanlley_locke/vpn_script
+# Cloudflare DNS helper — stanlley-locke/vpn_script
 [ -f /usr/local/lib/vpn_script/common.sh ] && source /usr/local/lib/vpn_script/common.sh
 [ -f /etc/vpn_script/config ] && source /etc/vpn_script/config
 

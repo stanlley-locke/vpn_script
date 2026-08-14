@@ -1,0 +1,3 @@
+#!/bin/bash
+[ -f /usr/local/lib/vpn_script/common.sh ] && source /usr/local/lib/vpn_script/common.sh
+exec /usr/local/sbin/cf-setup "$@"

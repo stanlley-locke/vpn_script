@@ -1,6 +1,6 @@
 [Unit]
 Description=Python Proxy ShadowTunneling
-Documentation=https://t.me/legion_Lemmar
+Documentation=stanlley-locke/vpn_script
 After=network.target nss-lookup.target
 
 [Service]

@@ -5,7 +5,7 @@
 # //	Author:	White Rose
 # //	Dscription: Xray Menu Management
 # //	email: Www.kheedrasachi@gmail.com
-# //  telegram: https://github.com/stanlley_locke
+# //  telegram: https://github.com/stanlley-locke
 # //====================================================
 # // font color configuration | White Rose AUTOSCRIPT
 red() { echo -e "\\033[32;1m${*}\\033[0m"; }

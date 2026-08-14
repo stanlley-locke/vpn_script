@@ -1,0 +1,14 @@
+[Unit]
+Description=VPN Script Subscription Server
+After=network.target xray.service
+
+[Service]
+Type=simple
+User=www-data
+Environment=SUB_PORT=8099
+ExecStart=/usr/bin/python3 /usr/local/lib/vpn_script/sub_server.py
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

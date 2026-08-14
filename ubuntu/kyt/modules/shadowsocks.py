@@ -84,7 +84,7 @@ Button.inline(" 60 Day ","60")]])
 **» Link JSON  :** `https://${DOMAIN}:81/ss-{user}.txt`
 **━━━━━━━━━━━━━━━━━**
 **» Expired Until:** `{later}`
-**» 🤖@stanlley_locke**
+**» 🤖@stanlley-locke**
 """
 			await event.respond(msg)
 	chat = event.chat_id
@@ -107,7 +107,7 @@ async def cek_shadowsocks(event):
 {z}
 
 **Shows Logged In Users Shadowsocks**
-**» 🤖@stanlley_locke**
+**» 🤖@stanlley-locke**
 """,buttons=[[Button.inline("‹ Main Menu ›","menu")]])
 	sender = await event.get_sender()
 	a = valid(str(sender.id))
@@ -215,7 +215,7 @@ Button.inline(" 60 Menit ","60")]])
 **» Link JSON  :** `https://${DOMAIN}:81/ss-{remarks}.txt`
 **━━━━━━━━━━━━━━━━━**
 **» Expired Until :** `{exp} Minutes`
-**» 🤖@stanlley_locke**
+**» 🤖@stanlley-locke**
 """
 			await event.respond(msg)
 	chat = event.chat_id
@@ -244,7 +244,7 @@ Button.inline(" DELETE SHDWSCSK ","delete-shadowsocks")],
 ✅ **» Hostname/IP:** `{DOMAIN}`
 ✅ **» ISP:** `{z["isp"]}`
 ✅ **» Country:** `{z["country"]}`
-🤖 **» @stanlley_locke**
+🤖 **» @stanlley-locke**
 ━━━━━━━━━━━━━━━━━━━━━━━ 
 """
 		await event.edit(msg,buttons=inline)

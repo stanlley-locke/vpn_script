@@ -1,0 +1,245 @@
+{
+  "sni_hosts": [
+    {
+      "id": "sni-domain-default",
+      "name": "Your proxy domain",
+      "category": "default",
+      "host": "[domain]",
+      "description": "Uses your VPS domain from /etc/xray/domain — recommended for Cloudflare proxied setups.",
+      "use_case": "production"
+    },
+    {
+      "id": "sni-cloudflare-104-18-8-127",
+      "name": "Cloudflare anycast IP",
+      "category": "cloudflare",
+      "host": "104.18.8.127",
+      "description": "Cloudflare edge IP used as TLS SNI target in many HTTP Custom profiles.",
+      "use_case": "bypass, fronting"
+    },
+    {
+      "id": "sni-openwho",
+      "name": "OpenWHO.org",
+      "category": "education",
+      "host": "openwho.org",
+      "description": "WHO education platform — common trace host in CF-RAY payloads.",
+      "use_case": "zero-rated, health"
+    },
+    {
+      "id": "sni-africanstorybook",
+      "name": "African Storybook",
+      "category": "education",
+      "host": "africanstorybook.org",
+      "description": "Education NGO site used in East Africa payload chains.",
+      "use_case": "zero-rated, education"
+    },
+    {
+      "id": "sni-bootstrapcdn",
+      "name": "MaxCDN Bootstrap",
+      "category": "cdn",
+      "host": "maxcdn.bootstrapcdn.com",
+      "description": "Bootstrap CDN — used in HEAD/GET split payloads.",
+      "use_case": "cdn fronting"
+    },
+    {
+      "id": "sni-youtube",
+      "name": "YouTube",
+      "category": "cdn",
+      "host": "www.youtube.com",
+      "description": "YouTube — video zero-rated on some carriers.",
+      "use_case": "zero-rated, video"
+    },
+    {
+      "id": "sni-google",
+      "name": "Google",
+      "category": "cdn",
+      "host": "www.google.com",
+      "description": "Google fronting SNI.",
+      "use_case": "general"
+    },
+    {
+      "id": "sni-dlight-coregateway",
+      "name": "DLight Core Gateway",
+      "category": "carrier",
+      "host": "coregateway.app.dlight.com",
+      "description": "DLight app gateway host.",
+      "use_case": "carrier"
+    },
+    {
+      "id": "sni-wstunnel-ca1",
+      "name": "WS Tunnel CA1",
+      "category": "tunnel",
+      "host": "ca1.wstunnel.site",
+      "description": "Wildcard tunnel: *.ca1.wstunnel.site",
+      "use_case": "ssh websocket tunnel"
+    },
+    {
+      "id": "sni-mtn-smartapp",
+      "name": "MTN Nigeria SmartApp",
+      "category": "carrier",
+      "host": "smartapp.mtnnigeria.net",
+      "description": "MTN Nigeria smart app gateway.",
+      "use_case": "mtn, nigeria"
+    },
+    {
+      "id": "sni-airtel-kenya",
+      "name": "Airtel Kenya",
+      "category": "carrier",
+      "host": "r.airtelkenya.com",
+      "description": "Airtel Kenya redirect host used in X-Online-Host headers.",
+      "use_case": "airtel, kenya"
+    },
+    {
+      "id": "sni-safaricom-api",
+      "name": "Safaricom Consumer API",
+      "category": "carrier",
+      "host": "api.consumer.fsprod.safaricom.co.ke",
+      "description": "Safaricom production consumer API.",
+      "use_case": "safaricom, kenya, zero-rated"
+    },
+    {
+      "id": "sni-safaricom-auth",
+      "name": "Safaricom Auth DXL",
+      "category": "carrier",
+      "host": "authdxl.safaricom.co.ke",
+      "description": "Safaricom authentication endpoint.",
+      "use_case": "safaricom, kenya"
+    },
+    {
+      "id": "sni-safaricom-selfcare",
+      "name": "Safaricom Selfcare",
+      "category": "carrier",
+      "host": "selfcare.safaricom.co.ke",
+      "description": "Safaricom selfcare portal.",
+      "use_case": "safaricom, kenya, zero-rated"
+    },
+    {
+      "id": "sni-imperva",
+      "name": "Imperva",
+      "category": "cdn",
+      "host": "imperva.com",
+      "description": "Imperva CDN/WAF front.",
+      "use_case": "cdn"
+    },
+    {
+      "id": "sni-uber",
+      "name": "Uber",
+      "category": "cdn",
+      "host": "www.uber.com",
+      "description": "Uber main domain — appears in zero-rated lists.",
+      "use_case": "zero-rated"
+    },
+    {
+      "id": "sni-cloudfront",
+      "name": "CloudFront sample",
+      "category": "cdn",
+      "host": "d2s24bcvfqs8se.cloudfront.net",
+      "description": "AWS CloudFront distribution host from Safaricom-adjacent lists.",
+      "use_case": "cdn, aws"
+    },
+    {
+      "id": "sni-airtel-nigeria",
+      "name": "Airtel Nigeria",
+      "category": "carrier",
+      "host": "www.airtel.com.ng",
+      "description": "Airtel Nigeria portal — used in X-Online-Host headers.",
+      "use_case": "airtel, nigeria"
+    },
+    {
+      "id": "sni-airtel-uganda",
+      "name": "Airtel Uganda",
+      "category": "carrier",
+      "host": "www.airtel.co.ug",
+      "description": "Airtel Uganda portal.",
+      "use_case": "airtel, uganda"
+    },
+    {
+      "id": "sni-airtel-tanzania",
+      "name": "Airtel Tanzania",
+      "category": "carrier",
+      "host": "www.airtel.co.tz",
+      "description": "Airtel Tanzania portal.",
+      "use_case": "airtel, tanzania"
+    },
+    {
+      "id": "sni-mtn-ghana",
+      "name": "MTN Ghana",
+      "category": "carrier",
+      "host": "mtn.com.gh",
+      "description": "MTN Ghana main portal.",
+      "use_case": "mtn, ghana"
+    },
+    {
+      "id": "sni-mtn-za",
+      "name": "MTN South Africa",
+      "category": "carrier",
+      "host": "www.mtn.co.za",
+      "description": "MTN South Africa portal.",
+      "use_case": "mtn, south-africa"
+    },
+    {
+      "id": "sni-vodacom-za",
+      "name": "Vodacom South Africa",
+      "category": "carrier",
+      "host": "www.vodacom.co.za",
+      "description": "Vodacom SA portal — common zero-rated host.",
+      "use_case": "vodacom, south-africa"
+    },
+    {
+      "id": "sni-vodacom-tz",
+      "name": "Vodacom Tanzania",
+      "category": "carrier",
+      "host": "www.vodacom.co.tz",
+      "description": "Vodacom Tanzania portal.",
+      "use_case": "vodacom, tanzania"
+    },
+    {
+      "id": "sni-mtn-momo",
+      "name": "MTN MoMo API",
+      "category": "carrier",
+      "host": "momodeveloper.mtn.com",
+      "description": "MTN Mobile Money developer gateway.",
+      "use_case": "mtn, momo, api"
+    }
+  ],
+  "zerorate_hosts": {
+    "safaricom_ke": [
+      "pay.m-pesaforbusiness.co.ke",
+      "smartinventory.safaricom.co.ke",
+      "selfcare.safaricom.co.ke",
+      "webchat.safaricom.co.ke",
+      "mpesaminiapps.safaricom.co.ke",
+      "api.consumer.fsprod.safaricom.co.ke",
+      "authdxl.safaricom.co.ke",
+      "auth.fsdev.safaricom.co.ke",
+      "partnerhub.safaricom.co.ke",
+      "mpesastatementverification.safaricom.co.ke",
+      "county.safaricom.co.ke",
+      "api.county.safaricom.co.ke",
+      "diginoc.safaricom.co.ke",
+      "decode.safaricom.co.ke",
+      "api.safaricom.loholearning.co.ke",
+      "imperva.com",
+      "header.safaricombeats.co.ke"
+    ],
+    "general_cdn": [
+      "eats.sng.link",
+      "js.adsrvr.org",
+      "csp.uber.com",
+      "merchants.ubereats.com",
+      "tb-static.uber.com",
+      "firebaselogging-pa.googleapis.com",
+      "assets.adobedtm.com",
+      "app.adjust.com",
+      "sdk-02.moengage.com"
+    ],
+    "airtel_ke": ["r.airtelkenya.com", "africanstorybook.org", "openwho.org"],
+    "airtel_ng": ["www.airtel.com.ng", "airtel.com.ng", "ng.airtel.com"],
+    "airtel_ug": ["www.airtel.co.ug", "airtel.co.ug"],
+    "airtel_tz": ["www.airtel.co.tz", "airtel.co.tz"],
+    "mtn_ng": ["smartapp.mtnnigeria.net", "mtnnigeria.net", "momodeveloper.mtn.com"],
+    "mtn_gh": ["mtn.com.gh", "apps.mtn.com.gh"],
+    "mtn_za": ["www.mtn.co.za", "mtn.co.za"],
+    "vodacom_za": ["www.vodacom.co.za", "vodacom.co.za", "voda.co.za"],
+    "vodacom_tz": ["www.vodacom.co.tz", "vodacom.co.tz"]
+  }
+}

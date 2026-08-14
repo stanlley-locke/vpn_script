@@ -1,8 +1,8 @@
 #!/bin/bash
-# Telegram bot panel installer — stanlley_locke/vpn_script
+# Telegram bot panel installer — stanlley-locke/vpn_script
 [ -f /usr/local/lib/vpn_script/common.sh ] && source /usr/local/lib/vpn_script/common.sh
 
-REPO="${VPN_REPO:-https://raw.githubusercontent.com/stanlley_locke/vpn_script/main/}"
+REPO="${VPN_REPO:-https://raw.githubusercontent.com/stanlley-locke/vpn_script/main/}"
 NS=$(cat /etc/xray/dns 2>/dev/null || echo "")
 PUB=$(cat /etc/slowdns/server.pub 2>/dev/null || echo "")
 domain=$(cat /etc/xray/domain 2>/dev/null || echo "localhost")

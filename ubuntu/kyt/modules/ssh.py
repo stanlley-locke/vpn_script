@@ -98,7 +98,7 @@ Button.inline(" 60 Day ","60")]])
 **» Proxy Squid      :** `3128`
 **» BadVPN UDP       :** `7100, 7300, 7300`
 **━━━━━━━━━━━━━━━━━**
-**» Payload WSS      :** `GET wss://BUG.COM/ HTTP/1.1[crlf]Host: {DOMAIN}[crlf]Upgrade: websocket[crlf][crlf]`
+**» Payload WSS      :** `GET wss://{DOMAIN}/ HTTP/1.1[crlf]Host: {DOMAIN}[crlf]Upgrade: websocket[crlf][crlf]`
 **━━━━━━━━━━━━━━━━━**
 **» OpenVPN WS SSL   :** `https://{DOMAIN}:81/ws-ssl.ovpn`
 **» OpenVPN SSL      :** `https://{DOMAIN}:81/ssl.ovpn`
@@ -107,7 +107,7 @@ Button.inline(" 60 Day ","60")]])
 **━━━━━━━━━━━━━━━━━**
 **» Save Link Account:** `https://{DOMAIN}:81/ssh-{user.strip()}.txt`
 **» Expired Until:** `{later}`
-**» 🤖@stanlley_locke**
+**» 🤖@stanlley-locke**
 """
 			await event.respond(msg)
 	chat = event.chat_id
@@ -130,7 +130,7 @@ async def show_ssh(event):
 {z}
 ```
 **Show All SSH User**
-**» 🤖@stanlley_locke**
+**» 🤖@stanlley-locke**
 """,buttons=[[Button.inline("‹ Main Menu ›","menu")]])
 	sender = await event.get_sender()
 	a = valid(str(sender.id))
@@ -210,7 +210,7 @@ Button.inline(" 60 Menit ","60")]])
 **» Proxy Squid      :** `3128`
 **» BadVPN UDP       :** `7100, 7300, 7300`
 **━━━━━━━━━━━━━━━━━**
-**» Payload WSS      :** `GET wss://BUG.COM/ HTTP/1.1[crlf]Host: {DOMAIN}[crlf]Upgrade: websocket[crlf][crlf]`
+**» Payload WSS      :** `GET wss://{DOMAIN}/ HTTP/1.1[crlf]Host: {DOMAIN}[crlf]Upgrade: websocket[crlf][crlf]`
 **━━━━━━━━━━━━━━━━━**
 **» OpenVPN WS SSL   :** `https://{DOMAIN}:81/ws-ssl.ovpn`
 **» OpenVPN SSL      :** `https://{DOMAIN}:81/ssl.ovpn`
@@ -219,7 +219,7 @@ Button.inline(" 60 Menit ","60")]])
 **━━━━━━━━━━━━━━━━━**
 **» Save Link Account:** `https://{DOMAIN}:81/ssh-{user.strip()}.txt`
 **» Expired Until:** `{exp} Minutes`
-**» 🤖@stanlley_locke**
+**» 🤖@stanlley-locke**
 """
 			await event.respond(msg)
 	chat = event.chat_id
@@ -242,7 +242,7 @@ async def login_ssh(event):
 {z}
 
 **shows logged in users SSH Ovpn**
-**» 🤖@stanlley_locke**
+**» 🤖@stanlley-locke**
 """,buttons=[[Button.inline("‹ Main Menu ›","menu")]])
 	sender = await event.get_sender()
 	a = valid(str(sender.id))
@@ -272,7 +272,7 @@ Button.inline(" REGIS IP ","regis")],
 ✅ **» Hostname/IP:** `{DOMAIN}`
 ✅ **» ISP:** `{z["isp"]}`
 ✅ **» Country:** `{z["country"]}`
-🤖 **» @stanlley_locke**
+🤖 **» @stanlley-locke**
 ━━━━━━━━━━━━━━━━━━━━━━━ 
 """
 		await event.edit(msg,buttons=inline)

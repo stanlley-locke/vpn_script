@@ -1,0 +1,27 @@
+#!/bin/bash
+# REALITY (VLESS) menu — stanlley-locke/vpn_script
+[ -f /usr/local/lib/vpn_script/common.sh ] && source /usr/local/lib/vpn_script/common.sh
+clear
+echo -e "\033[1;93m┌──────────────────────────────────────────┐\033[0m"
+echo -e "              REALITY (VLESS) MENU"
+echo -e "\033[1;93m└──────────────────────────────────────────┘\033[0m"
+echo ""
+echo " [1] Install / regenerate REALITY keys"
+echo " [2] Add REALITY user"
+echo " [3] Show REALITY public key & port"
+echo " [0] Back"
+echo ""
+read -p " Select: " o
+case "$o" in
+1) /usr/local/sbin/reality-setup install ;;
+2) read -rp " Username: " u; read -rp " Days [30]: " d; /usr/local/sbin/reality-setup add "$u" "${d:-30}" ;;
+3)
+    if [[ -f /etc/xray/reality.json ]]; then
+        jq . /etc/xray/reality.json
+    else
+        echo "REALITY not installed. Choose option 1."
+    fi
+    ;;
+0|*) menu ;;
+esac
+read -n1 -s -r -p "Press Enter..."; menu

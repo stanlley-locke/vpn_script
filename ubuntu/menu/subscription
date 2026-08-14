@@ -1,0 +1,22 @@
+#!/bin/bash
+# Subscription URL menu — stanlley-locke/vpn_script
+clear
+echo -e "\033[1;93m┌──────────────────────────────────────────┐\033[0m"
+echo -e "           SUBSCRIPTION URL (/sub/token)"
+echo -e "\033[1;93m└──────────────────────────────────────────┘\033[0m"
+echo ""
+echo " [1] Install subscription service"
+echo " [2] Generate new token"
+echo " [3] Show subscription URL"
+echo " [4] Test links (plain text)"
+echo " [0] Back"
+echo ""
+read -p " Select: " o
+case "$o" in
+1) /usr/local/sbin/sub-manage install ;;
+2) /usr/local/sbin/sub-manage generate-token ;;
+3) /usr/local/sbin/sub-manage url ;;
+4) /usr/local/sbin/sub-manage test ;;
+0|*) menu ;;
+esac
+read -n1 -s -r -p "Press Enter..."; menu

@@ -1,62 +1,54 @@
 #!/bin/bash
-# Service health check — stanlley_locke/vpn_script
+# Service health check — stanlley-locke/vpn_script
 set -euo pipefail
 
 [ -f /usr/local/lib/vpn_script/common.sh ] && source /usr/local/lib/vpn_script/common.sh
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-NC='\033[0m'
+RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[0;33m'; NC='\033[0m'
+failed=0
 
 check_service() {
     local name="$1"
     if systemctl is-active --quiet "$name" 2>/dev/null; then
         echo -e "${GREEN}●${NC} $name"
-        return 0
+    else
+        echo -e "${RED}●${NC} $name (down)"; ((failed++)) || true
     fi
-    echo -e "${RED}●${NC} $name (not running)"
-    return 1
 }
 
 check_port() {
-    local port="$1"
-    local label="$2"
-    if ss -tln | awk '{print $4}' | grep -q ":${port}$"; then
-        echo -e "${GREEN}●${NC} port ${port} (${label})"
-        return 0
+    local port="$1" label="$2"
+    if ss -tln 2>/dev/null | awk '{print $4}' | grep -qE ":${port}$"; then
+        echo -e "${GREEN}●${NC} :${port} ${label}"
+    else
+        echo -e "${YELLOW}○${NC} :${port} ${label}"
     fi
-    echo -e "${YELLOW}○${NC} port ${port} (${label}) — not listening"
-    return 1
+}
+
+check_cert() {
+    local cert="/etc/xray/xray.crt"
+    [[ -f "$cert" ]] || { echo -e "${RED}●${NC} TLS cert missing"; ((failed++)); return; }
+    local exp
+    exp=$(openssl x509 -enddate -noout -in "$cert" 2>/dev/null | cut -d= -f2)
+    echo -e "${GREEN}●${NC} TLS cert expires: ${exp}"
 }
 
 echo ""
-echo -e "${YELLOW}VPN Script Health Check — ${VPN_AUTHOR:-stanlley_locke}${NC}"
+echo -e "${YELLOW}VPN Script Health — ${VPN_AUTHOR:-stanlley-locke}${NC}"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo ""
 echo "Services:"
-failed=0
-for svc in xray nginx haproxy cron fail2ban; do
-    check_service "$svc" || ((failed++)) || true
-done
-if systemctl list-unit-files kyt.service &>/dev/null; then
-    check_service kyt || true
-fi
+for s in xray nginx haproxy ws cron fail2ban; do check_service "$s"; done
+systemctl is-enabled kyt &>/dev/null && check_service kyt
 echo ""
 echo "Ports:"
-check_port 443 "HAProxy/TLS" || true
-check_port 80 "HTTP" || true
-check_port 8880 "SSH non-TLS" || true
+check_port 443 "HAProxy/TLS"
+check_port 80 "HTTP"
+check_port 8880 "SSH plain"
+check_port 81 "Decoy TLS"
 echo ""
-if [[ -f /etc/xray/domain ]]; then
-    domain=$(cat /etc/xray/domain)
-    echo "Domain: ${domain}"
-    ip=$(vpn_get_public_ip 2>/dev/null || curl -4 -sS ipv4.icanhazip.com)
-    echo "Public IP: ${ip}"
-fi
+check_cert
+[[ -f /etc/xray/domain ]] && echo "Domain: $(cat /etc/xray/domain)"
+[[ -f /etc/xray/routing.active ]] && echo "Routing: $(cat /etc/xray/routing.active)"
+echo "IP: $(vpn_get_public_ip 2>/dev/null || echo unknown)"
 echo ""
-if [[ $failed -gt 0 ]]; then
-    echo -e "${RED}Some core services are down. Run: restart${NC}"
-    exit 1
-fi
-echo -e "${GREEN}Core services OK${NC}"
+[[ $failed -eq 0 ]] && echo -e "${GREEN}Core checks passed${NC}" || echo -e "${RED}${failed} service(s) need attention — run: reload-stack${NC}"

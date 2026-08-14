@@ -32,7 +32,7 @@ async def info_vps(event):
 		print(x)
 		z = subprocess.check_output(cmd, shell=True).decode("utf-8")
 		await event.respond(f"""```{z}```
-**🤖@stanlley_locke**
+**🤖@stanlley-locke**
 """,buttons=[[Button.inline("‹ Main Menu ›","menu")]])
 	sender = await event.get_sender()
 	a = valid(str(sender.id))

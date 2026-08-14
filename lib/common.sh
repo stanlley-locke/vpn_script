@@ -1,15 +1,15 @@
 #!/bin/bash
 [ -f /usr/local/lib/vpn_script/common.sh ] && source /usr/local/lib/vpn_script/common.sh
-# VPN Script shared library — stanlley_locke/vpn_script
+# VPN Script shared library — stanlley-locke/vpn_script
 # Installed to /usr/local/lib/vpn_script/common.sh during setup.
 
-readonly VPN_GITHUB_USER="${VPN_GITHUB_USER:-stanlley_locke}"
+readonly VPN_GITHUB_USER="${VPN_GITHUB_USER:-stanlley-locke}"
 readonly VPN_REPO_NAME="${VPN_REPO_NAME:-vpn_script}"
 readonly VPN_REPO_BRANCH="${VPN_REPO_BRANCH:-main}"
 readonly VPN_REPO="https://raw.githubusercontent.com/${VPN_GITHUB_USER}/${VPN_REPO_NAME}/${VPN_REPO_BRANCH}"
 readonly VPN_KEYGEN_URL="${VPN_KEYGEN_URL:-${VPN_REPO}/keygen}"
 readonly VPN_SCRIPT_NAME="${VPN_SCRIPT_NAME:-VPN Script}"
-readonly VPN_AUTHOR="${VPN_AUTHOR:-stanlley_locke}"
+readonly VPN_AUTHOR="${VPN_AUTHOR:-stanlley-locke}"
 readonly VPN_GITHUB_URL="https://github.com/${VPN_GITHUB_USER}/${VPN_REPO_NAME}"
 
 VPN_CONFIG_FILE="${VPN_CONFIG_FILE:-/etc/vpn_script/config}"
@@ -23,7 +23,7 @@ vpn_load_config() {
     INSTALL_NOTIFY="${INSTALL_NOTIFY:-0}"
     TELEGRAM_BOT_TOKEN="${TELEGRAM_BOT_TOKEN:-}"
     TELEGRAM_CHAT_ID="${TELEGRAM_CHAT_ID:-}"
-    SUPPORT_TELEGRAM="${SUPPORT_TELEGRAM:-@stanlley_locke}"
+    SUPPORT_TELEGRAM="${SUPPORT_TELEGRAM:-@stanlley-locke}"
 }
 
 vpn_get_public_ip() {

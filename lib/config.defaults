@@ -1,26 +1,68 @@
 # VPN Script runtime configuration
 # Copy to /etc/vpn_script/config during install.
-# Managed by stanlley_locke/vpn_script
 
-# Repository (override if using a fork)
-VPN_GITHUB_USER="stanlley_locke"
+VPN_GITHUB_USER="stanlley-locke"
 VPN_REPO_NAME="vpn_script"
 VPN_REPO_BRANCH="main"
 
-# License: 0 = disabled (self-hosted), 1 = check keygen file on GitHub
 LICENSE_CHECK="0"
-
-# Optional install notification via your own Telegram bot
 INSTALL_NOTIFY="0"
 TELEGRAM_BOT_TOKEN=""
 TELEGRAM_CHAT_ID=""
 
-# Branding
 VPN_SCRIPT_NAME="VPN Script"
-VPN_AUTHOR="stanlley_locke"
-SUPPORT_TELEGRAM="@stanlley_locke"
+VPN_AUTHOR="stanlley-locke"
+SUPPORT_TELEGRAM="@stanlley-locke"
 
-# Cloudflare API (optional — used by cf.sh for random subdomains)
+# ── Cloudflare ──────────────────────────────────────────────
 CF_EMAIL=""
 CF_API_KEY=""
 CF_DOMAIN=""
+CF_SSL_MODE="full"
+# Example (DNS only / direct to origin):
+# CF_DOMAIN="vps.stanlleylocke.dev"
+# CF_DNS_PROXIED=0
+# full | strict (requires origin cert via cf-setup)
+
+# ── SNI / HTTP Custom Application ───────────────────────────
+# SNI shown to client (use your domain or a fronting hostname)
+SNI_FRONTING=""
+# Optional path prefix for HTTP Custom App routing (e.g. /cdn/app)
+HTTP_APP_PREFIX=""
+# Per-protocol WebSocket paths (prepended with HTTP_APP_PREFIX if set)
+PATH_VLESS="/vless"
+PATH_VMESS="/vmess"
+PATH_TROJAN="/trojan-ws"
+PATH_SS="/ss-ws"
+PATH_SSH="/"
+# gRPC service names
+GRPC_VLESS="vless-grpc"
+GRPC_VMESS="vmess-grpc"
+GRPC_TROJAN="trojan-grpc"
+GRPC_SS="ss-grpc"
+
+# ── Routing ─────────────────────────────────────────────────
+# Default Xray routing: global | split | adblock | direct
+ROUTING_PROFILE="global"
+
+# ── SSH tunnel ──────────────────────────────────────────────
+SSH_WS_PORT="10015"
+SSH_DROPBEAR_PORT="109"
+SSH_OPENSSH_PORT="22"
+
+# ── Decoy site (camouflage for HTTP probes) ─────────────────
+DECOY_SITE_TITLE="Welcome"
+DECOY_SITE_ENABLED="1"
+
+# ── Subscription URL (/sub/<token>) ───────────────────────
+# Auto-generated on first run of: sub-manage generate-token
+SUBSCRIPTION_TOKEN=""
+SUBSCRIPTION_PORT="8099"
+
+# ── REALITY inbound ─────────────────────────────────────────
+REALITY_PORT="8443"
+REALITY_DEST="www.microsoft.com:443"
+REALITY_SNI="www.microsoft.com"
+
+# ── Cloudflare Tunnel ───────────────────────────────────────
+CF_TUNNEL_NAME=""

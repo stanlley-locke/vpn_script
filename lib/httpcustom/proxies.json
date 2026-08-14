@@ -1,0 +1,185 @@
+{
+  "proxies": [
+    {
+      "id": "proxy-cf-104-17-3-81-80",
+      "name": "Cloudflare 104.17.3.81:80",
+      "category": "cloudflare",
+      "host": "104.17.3.81",
+      "port": 80,
+      "protocol": "http",
+      "description": "Common Cloudflare edge used in HTTP Custom proxy field.",
+      "region": "global",
+      "tags": ["cloudflare", "port80"]
+    },
+    {
+      "id": "proxy-cf-104-18-8-127-443",
+      "name": "Cloudflare 104.18.8.127:443",
+      "category": "cloudflare",
+      "host": "104.18.8.127",
+      "port": 443,
+      "protocol": "https",
+      "description": "Cloudflare anycast — often paired as custom_sni and proxy.",
+      "region": "global",
+      "tags": ["cloudflare", "tls"]
+    },
+    {
+      "id": "proxy-cf-104-36-194-7-443",
+      "name": "Cloudflare 104.36.194.7:443",
+      "category": "cloudflare",
+      "host": "104.36.194.7",
+      "port": 443,
+      "protocol": "https",
+      "description": "CF edge from Uber/Safaricom-adjacent lists.",
+      "region": "global",
+      "tags": ["cloudflare", "tls"]
+    },
+    {
+      "id": "proxy-aws-52-84-100-81-443",
+      "name": "AWS 52.84.100.81:443",
+      "category": "public",
+      "host": "52.84.100.81",
+      "port": 443,
+      "protocol": "https",
+      "description": "Public HTTPS endpoint from community lists.",
+      "region": "us-east",
+      "tags": ["aws"]
+    },
+    {
+      "id": "proxy-local-172-22-2-38-80",
+      "name": "Local gateway 172.22.2.38:80",
+      "category": "carrier",
+      "host": "172.22.2.38",
+      "port": 80,
+      "protocol": "http",
+      "description": "Carrier/local gateway IP seen in OpenVPN route configs. Verify on your network.",
+      "region": "local",
+      "tags": ["carrier", "openvpn-route"]
+    },
+    {
+      "id": "proxy-mtn-smartapp-8080",
+      "name": "MTN SmartApp gateway",
+      "category": "carrier",
+      "host": "smartapp.mtnnigeria.net",
+      "port": 8080,
+      "protocol": "http",
+      "description": "MTN Nigeria SmartApp proxy gateway — use as custom_host in v5 profiles.",
+      "region": "ng",
+      "tags": ["mtn", "nigeria"]
+    },
+    {
+      "id": "proxy-38-182-86-250-2333",
+      "name": "Community proxy 38.182.86.250:2333",
+      "category": "public",
+      "host": "38.182.86.250",
+      "port": 2333,
+      "protocol": "http",
+      "description": "Community-reported proxy — verify availability before production use.",
+      "region": "unknown",
+      "tags": ["community"]
+    },
+    {
+      "id": "proxy-45-223-20-17-80",
+      "name": "45.223.20.17:80",
+      "category": "public",
+      "host": "45.223.20.17",
+      "port": 80,
+      "protocol": "http",
+      "description": "From Safaricom-adjacent host lists.",
+      "region": "unknown",
+      "tags": ["community"]
+    },
+    {
+      "id": "proxy-domain-443",
+      "name": "Your domain :443",
+      "category": "production",
+      "host": "[domain]",
+      "port": 443,
+      "protocol": "https",
+      "description": "Production proxy — your Cloudflare-proxied domain. Recommended default.",
+      "region": "production",
+      "tags": ["production", "recommended"]
+    },
+    {
+      "id": "proxy-domain-80",
+      "name": "Your domain :80",
+      "category": "production",
+      "host": "[domain]",
+      "port": 80,
+      "protocol": "http",
+      "description": "Production HTTP entry (non-TLS).",
+      "region": "production",
+      "tags": ["production"]
+    },
+    {
+      "id": "proxy-airtel-ng-80",
+      "name": "Airtel Nigeria gateway",
+      "category": "carrier",
+      "host": "www.airtel.com.ng",
+      "port": 80,
+      "protocol": "http",
+      "description": "Airtel Nigeria HTTP gateway for custom_host.",
+      "region": "ng",
+      "tags": ["airtel", "nigeria"]
+    },
+    {
+      "id": "proxy-airtel-ug-80",
+      "name": "Airtel Uganda gateway",
+      "category": "carrier",
+      "host": "www.airtel.co.ug",
+      "port": 80,
+      "protocol": "http",
+      "description": "Airtel Uganda HTTP gateway.",
+      "region": "ug",
+      "tags": ["airtel", "uganda"]
+    },
+    {
+      "id": "proxy-mtn-gh-8080",
+      "name": "MTN Ghana apps gateway",
+      "category": "carrier",
+      "host": "apps.mtn.com.gh",
+      "port": 8080,
+      "protocol": "http",
+      "description": "MTN Ghana apps proxy port.",
+      "region": "gh",
+      "tags": ["mtn", "ghana"]
+    },
+    {
+      "id": "proxy-mtn-za-80",
+      "name": "MTN South Africa",
+      "category": "carrier",
+      "host": "www.mtn.co.za",
+      "port": 80,
+      "protocol": "http",
+      "description": "MTN SA HTTP entry.",
+      "region": "za",
+      "tags": ["mtn", "south-africa"]
+    },
+    {
+      "id": "proxy-vodacom-za-80",
+      "name": "Vodacom South Africa",
+      "category": "carrier",
+      "host": "www.vodacom.co.za",
+      "port": 80,
+      "protocol": "http",
+      "description": "Vodacom SA HTTP gateway.",
+      "region": "za",
+      "tags": ["vodacom", "south-africa"]
+    },
+    {
+      "id": "proxy-vodacom-tz-80",
+      "name": "Vodacom Tanzania",
+      "category": "carrier",
+      "host": "www.vodacom.co.tz",
+      "port": 80,
+      "protocol": "http",
+      "description": "Vodacom TZ HTTP gateway.",
+      "region": "tz",
+      "tags": ["vodacom", "tanzania"]
+    }
+  ],
+  "ports": {
+    "ssh_ws_plain": [80, 8080, 8880, 2052, 2082, 2086, 2095],
+    "ssh_ws_tls": [443, 2053, 2083, 2087, 2096, 8443],
+    "udpgw": [7200, 7300]
+  }
+}

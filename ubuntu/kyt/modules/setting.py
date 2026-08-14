@@ -29,7 +29,7 @@ async def rebooot(event):
 		subprocess.check_output(cmd, shell=True)
 		await event.edit(f"""
 **» REBOOT SERVER**
-**» 🤖@stanlley_locke**
+**» 🤖@stanlley-locke**
 """,buttons=[[Button.inline("‹ Main Menu ›","menu")]])
 	sender = await event.get_sender()
 	a = valid(str(sender.id))
@@ -68,7 +68,7 @@ async def resx(event):
 		await event.edit(f"""
 ```Processing... 100%\n█████████████████████████ ```
 **» Restarting Service Done**
-**» 🤖@stanlley_locke**
+**» 🤖@stanlley-locke**
 """,buttons=[[Button.inline("‹ Main Menu ›","menu")]])
 	sender = await event.get_sender()
 	a = valid(str(sender.id))
@@ -104,7 +104,7 @@ async def speedtest(event):
 **
 {z}
 **
-**» 🤖@stanlley_locke**
+**» 🤖@stanlley-locke**
 """,buttons=[[Button.inline("‹ Main Menu ›","menu")]])
 	sender = await event.get_sender()
 	a = valid(str(sender.id))
@@ -131,7 +131,7 @@ async def backup(event):
 ```
 {a}
 ```
-**» 🤖@stanlley_locke**
+**» 🤖@stanlley-locke**
 """
 			await event.respond(msg)
 	chat = event.chat_id
@@ -156,7 +156,7 @@ async def restsore(event):
 			await event.respond("**Link Not Exist**")
 		else:
 			msg = f"""```{a}```
-**» @stanlley_locke**
+**» @stanlley-locke**
 """
 			await event.respond(msg)
 	chat = event.chat_id
@@ -182,7 +182,7 @@ Button.inline(" RESTORE","restore")],
 ✅ **» Hostname/IP:** `{DOMAIN}`
 ✅ **» ISP:** `{z["isp"]}`
 ✅ **» Country:** `{z["country"]}`
-🤖 **»@stanlley_locke**
+🤖 **»@stanlley-locke**
 ━━━━━━━━━━━━━━━━━━━━━━━ 
 """
 		await event.edit(msg,buttons=inline)
@@ -211,7 +211,7 @@ Button.inline(" RESTART SERVICE","resx")],
 ✅ **» Hostname/IP:** `{DOMAIN}`
 ✅ **» ISP:** `{z["isp"]}`
 ✅ **» Country:** `{z["country"]}`
-🤖 **»@stanlley_locke**
+🤖 **»@stanlley-locke**
 ━━━━━━━━━━━━━━━━━━━━━━━ 
 """
 		await event.edit(msg,buttons=inline)

@@ -1,0 +1,11 @@
+#!/bin/bash
+[ -f /usr/local/lib/vpn_script/common.sh ] && source /usr/local/lib/vpn_script/common.sh
+vpn_load_config
+clear
+echo "HTTP Custom App — path prefix"
+echo "Current HTTP_APP_PREFIX=${HTTP_APP_PREFIX:-<none>}"
+read -rp "New prefix (empty to clear, e.g. /app/cdn): " p
+sed -i '/^HTTP_APP_PREFIX=/d' /etc/vpn_script/config
+echo "HTTP_APP_PREFIX=\"${p}\"" >> /etc/vpn_script/config
+apply-paths
+read -n1 -s -r -p "Press Enter..."; menu

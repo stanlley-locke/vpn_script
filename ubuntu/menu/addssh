@@ -143,7 +143,7 @@ Aktif Selama     : $masaaktif Hari
 Dibuat Pada      : $tnggl
 Berakhir Pada    : $expe
 ◇━━━━━━━━━━━━━━━━━◇
-Payload WSS: GET wss://BUG.COM/ HTTP/1.1[crlf]Host: $domain[crlf]Upgrade: websocket[crlf][crlf] 
+Payload WSS: GET wss://$domain/ HTTP/1.1[crlf]Host: $domain[crlf]Upgrade: websocket[crlf][crlf]
 ◇━━━━━━━━━━━━━━━━━◇
 OVPN Download : https://$domain:81/
 ◇━━━━━━━━━━━━━━━━━◇
@@ -177,7 +177,7 @@ KEY="${TELEGRAM_BOT_TOKEN:-$(grep -E "^#bot# " "/etc/bot/.bot.db" 2>/dev/null | 
 <code>Port OVPN UDP    : 2200</code>
 <code>BadVPN UDP       : 7100, 7300, 7300</code>
 <code>◇━━━━━━━━━━━━━━━━━◇</code>
-<code>Payload WSS      : </code><code>GET wss://BUG.COM/ HTTP/1.1[crlf]Host: $domain[crlf]Upgrade: websocket[crlf][crlf]</code>
+<code>Payload WSS      : </code><code>GET wss://$domain/ HTTP/1.1[crlf]Host: $domain[crlf]Upgrade: websocket[crlf][crlf]</code>
 <code>◇━━━━━━━━━━━━━━━━━◇</code>
 OVPN Download : https://$domain:81/
 <code>◇━━━━━━━━━━━━━━━━━◇</code>
@@ -217,7 +217,9 @@ echo -e "Port OVPN TCP    : 443, 1194"
 echo -e "Port OVPN UDP    : 2200"
 echo -e "BadVPN UDP       : 7100, 7300, 7300"
 echo -e "\033[1;93m◇━━━━━━━━━━━━━━━━━━━━━━━━━◇\033[0m"
-echo -e "Payload WSS      : GET wss://BUG.COM/ HTTP/1.1[crlf]Host: $domain[crlf]Upgrade: websocket[crlf][crlf]"
+echo -e "Payload WSS      : GET wss://$domain/ HTTP/1.1[crlf]Host: $domain[crlf]Upgrade: websocket[crlf][crlf]"
+echo -e "HTTP Custom      : run 'httpc-export-v5 profile-v5-production-ssh ${Login}'"
+echo -e "HTTP Custom Lib  : httpcustom-lib"
 echo -e "\033[1;93m◇━━━━━━━━━━━━━━━━━━━━━━━━━◇\033[0m"
 echo -e "OVPN Download    : https://$domain:81/"
 echo -e "\033[1;93m◇━━━━━━━━━━━━━━━━━━━━━━━━━◇\033[0m"
@@ -227,3 +229,15 @@ echo -e "Aktif Selama     : $masaaktif Hari"
 echo -e "Dibuat Pada      : $tnggl"
 echo -e "Berakhir Pada    : $expe"
 echo -e "\033[1;93m◇━━━━━━━━━━━━━━━━━━━━━━━━━◇\033[0m"
+
+# Auto-export HTTP Custom profiles for this SSH user
+if [[ -x /usr/local/sbin/httpcustom-export ]]; then
+    /usr/local/sbin/httpcustom-export profile-v5-production-ssh "$Login" "$Pass" \
+        "/var/www/html/httpcustom-${Login}.json" >/dev/null 2>&1 || true
+    source /usr/local/lib/vpn_script/httpcustom.sh 2>/dev/null \
+        && httpc_export_text profile-v5-cf-ray-ssh "$Login" "$Pass" \
+        > "/var/www/html/ssh-${Login}-httpcustom.txt" 2>/dev/null || true
+    echo -e "HTTP Custom JSON : https://$domain:81/httpcustom-${Login}.json"
+    echo -e "HTTP Custom TXT  : https://$domain:81/ssh-${Login}-httpcustom.txt"
+    echo -e "\033[1;93m◇━━━━━━━━━━━━━━━━━━━━━━━━━◇\033[0m"
+fi

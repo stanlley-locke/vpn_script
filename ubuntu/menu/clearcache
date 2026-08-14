@@ -21,7 +21,7 @@ KEY="${TELEGRAM_BOT_TOKEN:-$(grep -E "^#bot# " "/etc/bot/.bot.db" 2>/dev/null | 
 <code>◇━━━━━━━━━━━━━━◇</code>
 <code>Clear Cache Done</code>
 <code>◇━━━━━━━━━━━━━━◇</code>
-<code>BY BOT : @stanlley_locke</code>
+<code>BY BOT : @stanlley-locke</code>
 "
 curl -s --max-time $TIME -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null
 }

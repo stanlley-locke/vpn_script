@@ -5,7 +5,7 @@
 # //	Author:	White Rose
 # //	Dscription: Xray Menu Management
 # //	email: Www.kheedrasachi@gmail.com
-# //  telegram: https://github.com/stanlley_locke
+# //  telegram: https://github.com/stanlley-locke
 # //====================================================
 # // font color configuration | White Rose AUTOSCRIPT
 red() { echo -e "\\033[32;1m${*}\\033[0m"; }
@@ -52,9 +52,9 @@ LOCATION    : $CITY
 LINK BACKUP : $LINKBACKUP
 _______________________________________
 
-© Copyright By https://github.com/stanlley_locke
+© Copyright By https://github.com/stanlley-locke
 Busines email : Www.kheedrasachi@gmail.com
-Report bugs   : https://github.com/stanlley_locke
+Report bugs   : https://github.com/stanlley-locke
 FighterTunnel Project
     " | mail -s "FighterTunnel Backup" $EMAIL
     echo -e "◇━━━━━━━━━━━━━━━━━━━━━━━━━◇"

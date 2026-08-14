@@ -1,0 +1,355 @@
+{
+  "profiles": [
+    {
+      "id": "profile-v5-cf-ray-ssh",
+      "name": "HTTP Custom v5 — CF-RAY SSH WebSocket",
+      "type": "ssh_ws",
+      "payload_id": "cf-trace-cf-ray-v1",
+      "sni_id": "sni-cloudflare-104-18-8-127",
+      "proxy_id": "proxy-cf-104-17-3-81-80",
+      "template": {
+        "profile": {},
+        "profilev5": {
+          "connection_mode": "3",
+          "server_port": 80,
+          "custom_payload": "@payload",
+          "custom_host": "@proxy_host:@proxy_port",
+          "custom_sni": "@sni",
+          "custom_resolver": "1.1.1.1",
+          "use_realm_host": false,
+          "preserve_sni": false,
+          "use_tcp_payload": false,
+          "override_primary_host": false,
+          "base_tunnel": 0,
+          "isv5": true
+        },
+        "descriptionv5": "VPN Script — CF-RAY SSH by stanlley-locke",
+        "protextras": {
+          "anti_sniff": true,
+          "mobile_data": true,
+          "block_root": false,
+          "password": false,
+          "expiry": false
+        }
+      }
+    },
+    {
+      "id": "profile-v5-split-bootstrap-ssh",
+      "name": "HTTP Custom v5 — Split Bootstrap SSH",
+      "type": "ssh_ws",
+      "payload_id": "split-head-bootstrap-v1",
+      "sni_id": "sni-cloudflare-104-18-8-127",
+      "proxy_id": "proxy-mtn-smartapp-8080",
+      "template": {
+        "profile": {},
+        "profilev5": {
+          "connection_mode": "3",
+          "server_port": 80,
+          "custom_payload": "@payload",
+          "custom_host": "smartapp.mtnnigeria.net:8080",
+          "custom_sni": "104.18.8.127",
+          "custom_resolver": "1.1.1.1",
+          "use_realm_host": true,
+          "preserve_sni": false,
+          "use_tcp_payload": false,
+          "realm_host": "site1.blogstar.net",
+          "override_primary_host": false,
+          "base_tunnel": 0,
+          "isv5": true
+        },
+        "descriptionv5": "VPN Script — Split CDN SSH by stanlley-locke",
+        "protextras": {
+          "anti_sniff": true,
+          "mobile_data": true,
+          "block_root": false,
+          "password": false,
+          "expiry": false
+        }
+      }
+    },
+    {
+      "id": "profile-v5-youtube-connect-ssh",
+      "name": "HTTP Custom v5 — YouTube CONNECT SSH",
+      "type": "ssh_ws",
+      "payload_id": "youtube-connect-instant-v1",
+      "sni_id": "sni-youtube",
+      "proxy_id": "proxy-cf-104-17-3-81-80",
+      "template": {
+        "profile": {},
+        "profilev5": {
+          "connection_mode": "3",
+          "server_port": 80,
+          "custom_payload": "@payload",
+          "custom_host": "@proxy_host:@proxy_port",
+          "custom_sni": "www.youtube.com",
+          "custom_resolver": "8.8.8.8",
+          "use_realm_host": false,
+          "preserve_sni": false,
+          "use_tcp_payload": false,
+          "base_tunnel": 0,
+          "isv5": true
+        },
+        "descriptionv5": "VPN Script — YouTube CONNECT by stanlley-locke",
+        "protextras": {
+          "anti_sniff": true,
+          "mobile_data": true,
+          "block_root": false,
+          "password": false,
+          "expiry": false
+        }
+      }
+    },
+    {
+      "id": "profile-v5-safaricom-ssh",
+      "name": "HTTP Custom v5 — Safaricom API SSH",
+      "type": "ssh_ws",
+      "payload_id": "ws-safaricom-api-v1",
+      "sni_id": "sni-safaricom-api",
+      "proxy_id": "proxy-aws-52-84-100-81-443",
+      "template": {
+        "profile": {},
+        "profilev5": {
+          "connection_mode": "3",
+          "server_port": 443,
+          "custom_payload": "@payload",
+          "custom_host": "@domain:443",
+          "custom_sni": "api.consumer.fsprod.safaricom.co.ke",
+          "custom_resolver": "1.1.1.1",
+          "use_realm_host": false,
+          "preserve_sni": false,
+          "use_tcp_payload": false,
+          "base_tunnel": 0,
+          "isv5": true
+        },
+        "descriptionv5": "VPN Script — Safaricom zero-rated by stanlley-locke",
+        "protextras": {
+          "anti_sniff": true,
+          "mobile_data": true,
+          "block_root": false,
+          "password": false,
+          "expiry": false
+        }
+      }
+    },
+    {
+      "id": "profile-v5-production-ssh",
+      "name": "HTTP Custom v5 — Production (your domain)",
+      "type": "ssh_ws",
+      "payload_id": "ws-basic-double-upgrade-v1",
+      "sni_id": "sni-domain-default",
+      "proxy_id": "proxy-domain-443",
+      "template": {
+        "profile": {},
+        "profilev5": {
+          "connection_mode": "3",
+          "server_port": 443,
+          "custom_payload": "@payload",
+          "custom_host": "@domain:443",
+          "custom_sni": "@domain",
+          "custom_resolver": "1.1.1.1",
+          "use_realm_host": false,
+          "preserve_sni": true,
+          "use_tcp_payload": false,
+          "override_primary_host": false,
+          "base_tunnel": 0,
+          "isv5": true
+        },
+        "descriptionv5": "VPN Script — Production SSH WS by stanlley-locke",
+        "protextras": {
+          "anti_sniff": true,
+          "mobile_data": false,
+          "block_root": false,
+          "password": false,
+          "expiry": false
+        }
+      }
+    },
+    {
+      "id": "profile-v5-africanstorybook-ssh",
+      "name": "HTTP Custom v5 — African Storybook chain",
+      "type": "ssh_ws",
+      "payload_id": "cf-trace-africanstorybook-v1",
+      "sni_id": "sni-africanstorybook",
+      "proxy_id": "proxy-cf-104-17-3-81-80",
+      "template": {
+        "profile": {},
+        "profilev5": {
+          "connection_mode": "3",
+          "server_port": 80,
+          "custom_payload": "@payload",
+          "custom_host": "@proxy_host:@proxy_port",
+          "custom_sni": "africanstorybook.org",
+          "custom_resolver": "1.1.1.1",
+          "use_realm_host": false,
+          "preserve_sni": false,
+          "use_tcp_payload": false,
+          "base_tunnel": 0,
+          "isv5": true
+        },
+        "descriptionv5": "VPN Script — Airtel/CF chain by stanlley-locke",
+        "protextras": {
+          "anti_sniff": true,
+          "mobile_data": true,
+          "block_root": false,
+          "password": false,
+          "expiry": false
+        }
+      }
+    },
+    {
+      "id": "profile-v5-mpesa-ssh",
+      "name": "HTTP Custom v5 — M-Pesa Safaricom SSH",
+      "type": "ssh_ws",
+      "payload_id": "ws-mpesa-business-v1",
+      "sni_id": "sni-safaricom-api",
+      "proxy_id": "proxy-cf-104-17-3-81-80",
+      "template": {
+        "profile": {},
+        "profilev5": {
+          "connection_mode": "3",
+          "server_port": 80,
+          "custom_payload": "@payload",
+          "custom_host": "@proxy_host:@proxy_port",
+          "custom_sni": "pay.m-pesaforbusiness.co.ke",
+          "custom_resolver": "1.1.1.1",
+          "use_realm_host": false,
+          "preserve_sni": false,
+          "use_tcp_payload": false,
+          "base_tunnel": 0,
+          "isv5": true
+        },
+        "descriptionv5": "VPN Script — M-Pesa zero-rated by stanlley-locke",
+        "protextras": { "anti_sniff": true, "mobile_data": true, "block_root": false, "password": false, "expiry": false }
+      }
+    },
+    {
+      "id": "profile-v5-airtel-ng-ssh",
+      "name": "HTTP Custom v5 — Airtel Nigeria SSH",
+      "type": "ssh_ws",
+      "payload_id": "airtel-ng-cf-ray-v1",
+      "sni_id": "sni-airtel-nigeria",
+      "proxy_id": "proxy-airtel-ng-80",
+      "template": {
+        "profilev5": {
+          "connection_mode": "3", "server_port": 80, "custom_payload": "@payload",
+          "custom_host": "www.airtel.com.ng:80", "custom_sni": "104.18.8.127",
+          "custom_resolver": "1.1.1.1", "use_realm_host": false, "preserve_sni": false,
+          "use_tcp_payload": false, "base_tunnel": 0, "isv5": true
+        },
+        "descriptionv5": "Airtel Nigeria — stanlley-locke"
+      }
+    },
+    {
+      "id": "profile-v5-airtel-ug-ssh",
+      "name": "HTTP Custom v5 — Airtel Uganda SSH",
+      "type": "ssh_ws",
+      "payload_id": "airtel-ug-ws-v1",
+      "sni_id": "sni-airtel-uganda",
+      "proxy_id": "proxy-airtel-ug-80",
+      "template": {
+        "profilev5": {
+          "connection_mode": "3", "server_port": 80, "custom_payload": "@payload",
+          "custom_host": "www.airtel.co.ug:80", "custom_sni": "www.airtel.co.ug",
+          "custom_resolver": "1.1.1.1", "use_realm_host": false, "base_tunnel": 0, "isv5": true
+        },
+        "descriptionv5": "Airtel Uganda — stanlley-locke"
+      }
+    },
+    {
+      "id": "profile-v5-airtel-tz-ssh",
+      "name": "HTTP Custom v5 — Airtel Tanzania SSH",
+      "type": "ssh_ws",
+      "payload_id": "airtel-tz-connect-v1",
+      "sni_id": "sni-airtel-tanzania",
+      "proxy_id": "proxy-cf-104-17-3-81-80",
+      "template": {
+        "profilev5": {
+          "connection_mode": "3", "server_port": 80, "custom_payload": "@payload",
+          "custom_host": "@proxy_host:@proxy_port", "custom_sni": "www.airtel.co.tz",
+          "custom_resolver": "8.8.8.8", "base_tunnel": 0, "isv5": true
+        },
+        "descriptionv5": "Airtel Tanzania CONNECT — stanlley-locke"
+      }
+    },
+    {
+      "id": "profile-v5-mtn-gh-ssh",
+      "name": "HTTP Custom v5 — MTN Ghana SSH",
+      "type": "ssh_ws",
+      "payload_id": "mtn-gh-split-v1",
+      "sni_id": "sni-mtn-ghana",
+      "proxy_id": "proxy-mtn-gh-8080",
+      "template": {
+        "profilev5": {
+          "connection_mode": "3", "server_port": 80, "custom_payload": "@payload",
+          "custom_host": "apps.mtn.com.gh:8080", "custom_sni": "104.18.8.127",
+          "use_realm_host": true, "realm_host": "mtn.com.gh", "base_tunnel": 0, "isv5": true
+        },
+        "descriptionv5": "MTN Ghana split — stanlley-locke"
+      }
+    },
+    {
+      "id": "profile-v5-mtn-za-ssh",
+      "name": "HTTP Custom v5 — MTN South Africa SSH",
+      "type": "ssh_ws",
+      "payload_id": "mtn-za-ws-v1",
+      "sni_id": "sni-mtn-za",
+      "proxy_id": "proxy-mtn-za-80",
+      "template": {
+        "profilev5": {
+          "connection_mode": "3", "server_port": 80, "custom_payload": "@payload",
+          "custom_host": "www.mtn.co.za:80", "custom_sni": "www.mtn.co.za",
+          "base_tunnel": 0, "isv5": true
+        },
+        "descriptionv5": "MTN South Africa — stanlley-locke"
+      }
+    },
+    {
+      "id": "profile-v5-mtn-momo-ssh",
+      "name": "HTTP Custom v5 — MTN MoMo API SSH",
+      "type": "ssh_ws",
+      "payload_id": "mtn-momo-api-v1",
+      "sni_id": "sni-mtn-momo",
+      "proxy_id": "proxy-mtn-smartapp-8080",
+      "template": {
+        "profilev5": {
+          "connection_mode": "3", "server_port": 80, "custom_payload": "@payload",
+          "custom_host": "smartapp.mtnnigeria.net:8080", "custom_sni": "momodeveloper.mtn.com",
+          "base_tunnel": 0, "isv5": true
+        },
+        "descriptionv5": "MTN MoMo API — stanlley-locke"
+      }
+    },
+    {
+      "id": "profile-v5-vodacom-za-ssh",
+      "name": "HTTP Custom v5 — Vodacom South Africa SSH",
+      "type": "ssh_ws",
+      "payload_id": "vodacom-za-ws-v1",
+      "sni_id": "sni-vodacom-za",
+      "proxy_id": "proxy-vodacom-za-80",
+      "template": {
+        "profilev5": {
+          "connection_mode": "3", "server_port": 80, "custom_payload": "@payload",
+          "custom_host": "www.vodacom.co.za:80", "custom_sni": "www.vodacom.co.za",
+          "base_tunnel": 0, "isv5": true
+        },
+        "descriptionv5": "Vodacom South Africa — stanlley-locke"
+      }
+    },
+    {
+      "id": "profile-v5-vodacom-tz-ssh",
+      "name": "HTTP Custom v5 — Vodacom Tanzania SSH",
+      "type": "ssh_ws",
+      "payload_id": "vodacom-tz-cf-ray-v1",
+      "sni_id": "sni-vodacom-tz",
+      "proxy_id": "proxy-vodacom-tz-80",
+      "template": {
+        "profilev5": {
+          "connection_mode": "3", "server_port": 80, "custom_payload": "@payload",
+          "custom_host": "www.vodacom.co.tz:80", "custom_sni": "104.18.8.127",
+          "base_tunnel": 0, "isv5": true
+        },
+        "descriptionv5": "Vodacom Tanzania CF-RAY — stanlley-locke"
+      }
+    }
+  ]
+}

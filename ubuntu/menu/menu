@@ -31,15 +31,19 @@ TIMEZONE=$(printf '%(%H:%M:%S)T')
 SERONLINE=$(uptime -p | cut -d " " -f 2-10000)
 clear
 MYIP=$(curl -sS ipv4.icanhazip.com)
+vpn_load_config 2>/dev/null || true
 echo ""
 #########################
-# USERNAME
-rm -f /usr/bin/user
-username=$(curl -sS https://raw.githubusercontent.com/stanlley_locke/vpn_script/main/keygen | grep $MYIP | awk '{print $2}')
+# USERNAME / LICENSE (display only when LICENSE_CHECK=1)
+rm -f /usr/bin/user /usr/bin/e
+if [[ "${LICENSE_CHECK:-0}" == "1" ]]; then
+username=$(curl -sS "${VPN_KEYGEN_URL:-https://raw.githubusercontent.com/stanlley-locke/vpn_script/main/keygen}" | grep "$MYIP" | awk '{print $2}')
+valid=$(curl -sS "${VPN_KEYGEN_URL:-https://raw.githubusercontent.com/stanlley-locke/vpn_script/main/keygen}" | grep "$MYIP" | awk '{print $3}')
+else
+username="${VPN_AUTHOR:-stanlley-locke}"
+valid="2099-12-31"
+fi
 echo "$username" >/usr/bin/user
-# validity
-rm -f /usr/bin/e
-valid=$(curl -sS https://raw.githubusercontent.com/stanlley_locke/vpn_script/main/keygen | grep $MYIP | awk '{print $3}')
 echo "$valid" >/usr/bin/e
 # DETAIL ORDER
 username=$(cat /usr/bin/user)
@@ -63,8 +67,8 @@ mai="datediff "$Exp" "$DATE""
 Info="(${green}Active${NC})"
 Error="(${RED}ExpiRED${NC})"
 today=`date -d "0 days" +"%Y-%m-%d"`
-Exp1=$(curl -sS https://raw.githubusercontent.com/stanlley_locke/vpn_script/main/keygen | grep $MYIP | awk '{print $3}')
-if [[ $today < $Exp1 ]]; then
+Exp1="$valid"
+if [[ "${LICENSE_CHECK:-0}" == "0" ]] || [[ $today < $Exp1 ]]; then
 sts="${Info}"
 else
 sts="${Error}"
@@ -156,7 +160,7 @@ r="\033[1;31m"  #REDTERANG
 a=" ${CYAN}ACCOUNT PREMIUM" 
 echo -e " "
 echo -e " ${z}╭══════════════════════════════════════════════════════════╮${NC}"
-echo -e " ${z}│$NC\033[91m                     Lemmar PREMIUM STORE                   $NC${z}│$NC"
+echo -e " ${z}│$NC\033[91m                  stanlley-locke VPN Script                   $NC${z}│$NC"
 echo -e " ${z}╰══════════════════════════════════════════════════════════╯${NC}"
 echo -e " ${z}╭══════════════════════════════════════════════════════════╮${NC}"
 echo -e " ${z}│$NC$r • $NC${z} System OS ${NC}     $Blue=$NC $MODEL${NC}"
@@ -194,9 +198,11 @@ echo -e " ${z}│$NC [${grenbo}05${NC}]${z} SHADOW MENU$NC  ${z}│$NC [${grenbo
 echo -e " ${z}│$NC [${grenbo}06${NC}]${z} LIMIT SPEED$NC  ${z}│$NC [${grenbo}13${NC}]${z} CLEAR LOG$NC   ${z} │$NC [${grenbo}20${NC}]${z} INS. UDP    $NC${z}│$NC"
 echo -e " ${z}│$NC [${grenbo}07${NC}]${z} VPS INFO$NC     ${z}│$NC [${grenbo}14${NC}]${z} Cek Bandiwth$NC ${z}│$NC [${grenbo}21${NC}]${z} CLEAR CACHE $NC${z}│$NC"
 echo -e " ${z}│$NC [${grenbo}22${NC}]${z} BOT NOTIF$NC    ${z}|$NC [${grenbo}23${NC}]${z} UPDATE SCRIPT$NC${z}|$NC [${grenbo}24${NC}]${z} BOT PANEL   $NC${z}│$NC"
+echo -e " ${z}│$NC [${grenbo}25${NC}]${z} BANNER$NC       ${z}|$NC [${grenbo}26${NC}]${z} CF SETUP$NC     ${z}|$NC [${grenbo}27${NC}]${z} HTTP CUSTOM $NC${z}│$NC"
+echo -e " ${z}│$NC [${grenbo}28${NC}]${z} ROUTING$NC      ${z}|$NC [${grenbo}29${NC}]${z} HEALTH CHECK$NC ${z}|$NC [${grenbo}30${NC}]${z} RELOAD STACK$NC${z}│$NC"
+echo -e " ${z}│$NC [${grenbo}31${NC}]${z} REALITY$NC      ${z}|$NC [${grenbo}32${NC}]${z} SUBSCRIPTION${NC}${z}|$NC [${grenbo}33${NC}]${z} CF TUNNEL   $NC${z}│$NC"
 echo -e " ${z}│                                                          $NC${z}│$NC"
-echo -e " ${z}│$NC [${grenbo}25${NC}]${z} CHANGE BANNER$NC ${KANAN} \E[0m\033[0;34m                                  $NC${z}│$NC"
-echo -e " ${z}│$NC [${grenbo}0${NC}]${z} BACK TO EXIT MENU$NC ${KANAN} \E[0m\033[0;34m                               $NC${z}│$NC"
+echo -e " ${z}│$NC [${grenbo}0${NC}]${z} EXIT$NC ${KANAN} \E[0m\033[0;34m                                          $NC${z}│$NC"
 echo -e " ${z}╰══════════════════════════════════════════════════════════╯${NC}"
 echo -e " ${z}╭══════════════════════════════════════════════════════════╮${NC}"
 echo -e " ${z}│$NC${z} Version$NC       ${Blue}=$NC V3.0.1"
@@ -312,7 +318,7 @@ bot
 ;;
 23)
 clear
-wget https://raw.githubusercontent.com/stanlley_locke/vpn_script/main/update.sh && chmod +x update.sh && ./update.sh
+wget https://raw.githubusercontent.com/stanlley-locke/vpn_script/main/update.sh && chmod +x update.sh && ./update.sh
 ;;
 24)
 clear
@@ -322,8 +328,42 @@ add-bot-panel
 clear
 nano /etc/kyt.txt
 ;;
+26)
+clear
+cf-setup
+;;
+27)
+clear
+httpcustom-lib
+;;
+28)
+clear
+routing-profile
+;;
+29)
+clear
+health-check
+read -n1 -s -r -p "Press Enter..."; menu
+;;
+30)
+clear
+reload-stack
+read -n1 -s -r -p "Press Enter..."; menu
+;;
+31)
+clear
+m-reality
+;;
+32)
+clear
+subscription
+;;
+33)
+clear
+cf-tunnel
+;;
 0 | 00)
-figlet Lemmar STORE 
+figlet "VPN Script"
 exit
 ;;
 x)

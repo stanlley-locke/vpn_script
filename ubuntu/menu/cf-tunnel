@@ -1,0 +1,24 @@
+#!/bin/bash
+# Cloudflare Tunnel menu — stanlley-locke/vpn_script
+clear
+echo -e "\033[1;93m┌──────────────────────────────────────────┐\033[0m"
+echo -e "         CLOUDFLARE TUNNEL (cloudflared)"
+echo -e "\033[1;93m└──────────────────────────────────────────┘\033[0m"
+echo ""
+echo " Hides origin IP — traffic enters via Cloudflare Tunnel only."
+echo ""
+echo " [1] Install cloudflared"
+echo " [2] Login to Cloudflare"
+echo " [3] Full tunnel setup (interactive)"
+echo " [4] Status"
+echo " [0] Back"
+echo ""
+read -p " Select: " o
+case "$o" in
+1) /usr/local/sbin/cf-tunnel install ;;
+2) /usr/local/sbin/cf-tunnel login ;;
+3) /usr/local/sbin/cf-tunnel setup ;;
+4) /usr/local/sbin/cf-tunnel status ;;
+0|*) menu ;;
+esac
+read -n1 -s -r -p "Press Enter..."; menu

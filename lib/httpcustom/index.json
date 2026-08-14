@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "name": "VPN Script HTTP Custom Library",
+    "author": "stanlley-locke",
+    "version": "1.2.0",
+    "description": "26 payloads, 25+ SNI hosts, 16 proxies, 15 v5 profiles for HTTP Custom",
+    "placeholders": {
+      "[host]": "SSH/VPS hostname (your domain)",
+      "[host_port]": "host:port e.g. vpn.example.com:443",
+      "[Host]": "Same as host (case variant used by some payloads)",
+      "[ua]": "User-Agent (client replaces)",
+      "[crlf]": "CRLF line ending",
+      "[split]": "Split delay marker",
+      "[instant_split]": "Instant split marker",
+      "[protocol]": "Protocol e.g. HTTP/1.1",
+      "[domain]": "Your proxy domain from server",
+      "[your_host]": "Front host in first leg",
+      "[base64-encoded-username:password]": "Proxy auth if needed"
+    }
+  },
+  "categories": {
+    "payloads": ["cloudflare", "split", "connect", "websocket", "carrier", "cdn", "advanced"],
+    "sni": ["cloudflare", "cdn", "carrier", "tunnel", "education", "anycast"],
+    "proxies": ["cloudflare", "carrier", "public", "cdn"],
+    "profiles": ["ssh_ws", "vmess_ws", "multi_hop"]
+  }
+}

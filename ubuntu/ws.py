@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # encoding: utf-8
-"""WebSocket SSH proxy — stanlley_locke/vpn_script"""
+"""WebSocket SSH proxy — stanlley-locke/vpn_script"""
 import select
 import socket
 import sys
@@ -16,7 +16,7 @@ except (IndexError, ValueError):
 PASS = ""
 BUFLEN = 8196 * 8
 TIMEOUT = 60
-MSG = "POWERED BY stanlley_locke"
+MSG = "POWERED BY stanlley-locke"
 COR = '<font color="#30e528">'
 FTAG = "</font>"
 DEFAULT_HOST = "127.0.0.1:22"

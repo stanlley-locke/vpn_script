@@ -1,9 +1,20 @@
 #!/bin/bash
 [ -f /usr/local/lib/vpn_script/common.sh ] && source /usr/local/lib/vpn_script/common.sh
 # VPN Script — Multi-protocol proxy installer
-# Author  : stanlley_locke
-# Repo    : https://github.com/stanlley_locke/vpn_script
+# Author  : stanlley-locke
+# Repo    : https://github.com/stanlley-locke/vpn_script
 # OS      : Debian 10+ / Ubuntu 18.04–24.04 (x86_64)
+
+# Optional env file (set by install.sh or manually)
+for _envf in "${VPN_ENV_FILE:-}" /root/vpn_script.env ./vpn_script.env; do
+    [[ -n "$_envf" && -f "$_envf" ]] || continue
+    set -a
+    # shellcheck source=/dev/null
+    source "$_envf"
+    set +a
+    break
+done
+unset _envf
 
 Green="\e[92;1m"
 RED="\033[31m"
@@ -31,8 +42,8 @@ clear;clear;clear
   # Banner
 echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo -e "  Script : ${BLUE}VPN Script${NC} — Multi-protocol Proxy"
-echo -e "  Author : ${GREEN}stanlley_locke${NC}"
-echo -e "  Repo   : ${BLUE}github.com/stanlley_locke/vpn_script${NC}"
+echo -e "  Author : ${GREEN}stanlley-locke${NC}"
+echo -e "  Repo   : ${BLUE}github.com/stanlley-locke/vpn_script${NC}"
 echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo ""
 sleep 2
@@ -88,7 +99,7 @@ gem install lolcat
 apt install wondershaper -y
 clear
 # REPO
-REPO="${VPN_REPO:-https://raw.githubusercontent.com/stanlley_locke/vpn_script/main/}"
+REPO="${VPN_REPO:-https://raw.githubusercontent.com/stanlley-locke/vpn_script/main/}"
 
 ####
 start=$(date +%s)
@@ -238,6 +249,15 @@ clear
 function pasang_domain() {
 echo -e ""
 clear
+if [[ -n "${VPN_DOMAIN:-}" ]]; then
+    echo -e " \e[1;32mUsing domain from environment: ${VPN_DOMAIN}\e[0m"
+    echo "$VPN_DOMAIN" > /etc/xray/domain
+    echo "$VPN_DOMAIN" > /root/domain
+    mkdir -p /var/lib/kyt
+    echo "IP=${VPS_PUBLIC_IP:-$(curl -sS ipv4.icanhazip.com 2>/dev/null)}" >> /var/lib/kyt/ipvps.conf
+    print_success "Domain ${VPN_DOMAIN}"
+    return 0
+fi
 echo -e " â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”"
 echo -e " \e[1;32mPlease Select a Domain Type Below \e[0m"
 echo -e " â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”"
@@ -279,7 +299,7 @@ if [[ "${LICENSE_CHECK:-0}" == "1" ]]; then
     username=$(curl -sS "$izinsc" | grep "$MYIP" | awk '{print $2}')
     expx=$(curl -sS "$izinsc" | grep "$MYIP" | awk '{print $3}')
 else
-    username="${VPN_AUTHOR:-stanlley_locke}"
+    username="${VPN_AUTHOR:-stanlley-locke}"
     expx="self-hosted"
 fi
 echo "$username" >/usr/bin/user
@@ -381,9 +401,20 @@ bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release
     print_install "Installing Packet Configuration"
     wget -O /etc/haproxy/haproxy.cfg "${REPO}ubuntu/haproxy.cfg" >/dev/null 2>&1
     wget -O /etc/nginx/conf.d/xray.conf "${REPO}ubuntu/xray.conf" >/dev/null 2>&1
+    wget -O /etc/nginx/conf.d/decoy.conf "${REPO}ubuntu/decoy.conf" >/dev/null 2>&1
+    wget -O /etc/nginx/conf.d/subscription.conf "${REPO}ubuntu/subscription.conf" >/dev/null 2>&1
+    curl -s "${REPO}ubuntu/nginx.conf" > /etc/nginx/nginx.conf
     sed -i "s/xxx/${domain}/g" /etc/haproxy/haproxy.cfg
     sed -i "s/xxx/${domain}/g" /etc/nginx/conf.d/xray.conf
-    curl ${REPO}ubuntu/nginx.conf > /etc/nginx/nginx.conf
+    sed -i "s/xxx/${domain}/g" /etc/nginx/conf.d/decoy.conf
+    # Decoy site + Cloudflare real IP placeholder
+    mkdir -p /var/www/html
+    wget -qO /var/www/html/index.html "${REPO}ubuntu/decoy/index.html"
+    sed -i "s/__DECOY_TITLE__/VPN Script/g" /var/www/html/index.html
+    touch /etc/nginx/conf.d/cloudflare-ips.conf
+    echo 'set_real_ip_from 127.0.0.1; real_ip_header CF-Connecting-IP;' > /etc/nginx/conf.d/cloudflare-ips.conf
+    # Apply custom paths if configured
+    [[ -x /usr/local/sbin/apply-paths ]] && /usr/local/sbin/apply-paths >/dev/null 2>&1 || true
     
 cat /etc/xray/xray.crt /etc/xray/xray.key | tee /etc/haproxy/hap.pem
 
@@ -800,6 +831,11 @@ cat >/etc/cron.d/xp_all <<-END
 	END
     echo "*/1 * * * * root echo -n > /var/log/nginx/access.log" >/etc/cron.d/log.nginx
     echo "*/1 * * * * root echo -n > /var/log/xray/access.log" >>/etc/cron.d/log.xray
+    cat >/etc/cron.d/cert-renew <<-END
+		SHELL=/bin/sh
+		PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+		0 3 * * 1 root /usr/local/sbin/cert-renew >> /var/log/cert-renew.log 2>&1
+	END
     service cron restart
     cat >/home/daily_reboot <<-END
 		5
@@ -877,14 +913,40 @@ function password_default() {
 
 function install_vpn_lib() {
     print_install "Installing VPN Script library"
-    mkdir -p /usr/local/lib/vpn_script /etc/vpn_script
-    wget -qO /usr/local/lib/vpn_script/common.sh "${REPO}lib/common.sh"
-    wget -qO /usr/local/lib/vpn_script/config.defaults "${REPO}lib/config.defaults"
+    mkdir -p /usr/local/lib/vpn_script /etc/xray/routing /usr/local/sbin
+    for f in common.sh cloudflare.sh linkgen.sh routing.sh httpcustom.sh config.defaults; do
+        wget -qO "/usr/local/lib/vpn_script/${f}" "${REPO}lib/${f}" 2>/dev/null || true
+    done
+    mkdir -p /usr/local/lib/vpn_script/httpcustom
+    for f in index.json payloads.json sni.json proxies.json profiles.json; do
+        wget -qO "/usr/local/lib/vpn_script/httpcustom/${f}" "${REPO}lib/httpcustom/${f}" 2>/dev/null || true
+    done
     if [[ ! -f /etc/vpn_script/config ]]; then
+        mkdir -p /etc/vpn_script
         cp /usr/local/lib/vpn_script/config.defaults /etc/vpn_script/config
     fi
-    wget -qO /usr/local/sbin/health-check "${REPO}health-check.sh"
-    chmod +x /usr/local/lib/vpn_script/common.sh /usr/local/sbin/health-check
+    for script in health-check cf-setup apply-routing apply-paths cert-renew reload-stack httpcustom-export httpcustom-export-v5 httpc-lib reality-setup cf-tunnel sub-manage apply-env preflight ec2-install; do
+        src="${script}.sh"
+        [[ "$script" == "httpc-lib" ]] && src="httpcustom.sh" && script_dest="httpc-lib" || script_dest="$script"
+        [[ "$script" == "httpcustom-export-v5" ]] && src="httpcustom-export-v5.sh"
+        [[ "$script" == "httpcustom-export" ]] && src="httpcustom-export.sh"
+        [[ "$script" == "health-check" ]] && src="health-check.sh" && script_dest="health-check"
+        wget -qO "/usr/local/sbin/${script_dest}" "${REPO}scripts/${src}" 2>/dev/null || \
+        wget -qO "/usr/local/sbin/${script_dest}" "${REPO}lib/${src}" 2>/dev/null || true
+    done
+    wget -qO /usr/local/lib/vpn_script/sub_server.py "${REPO}ubuntu/subscription/sub_server.py" 2>/dev/null || true
+    wget -qO /etc/systemd/system/subscription.service "${REPO}ubuntu/subscription/subscription.service" 2>/dev/null || true
+    wget -qO /etc/nginx/conf.d/subscription.conf "${REPO}ubuntu/subscription.conf" 2>/dev/null || true
+    wget -qO /usr/local/sbin/httpc-lib "${REPO}lib/httpcustom.sh" 2>/dev/null || true
+    for profile in global split adblock direct; do
+        wget -qO "/etc/xray/routing/${profile}.json" "${REPO}ubuntu/routing/${profile}.json"
+    done
+    chmod +x /usr/local/sbin/{health-check,cf-setup,apply-routing,apply-paths,cert-renew,reload-stack,httpcustom-export,httpcustom-export-v5,httpc-lib,reality-setup,cf-tunnel,sub-manage,apply-env,preflight,ec2-install} 2>/dev/null || true
+    systemctl daemon-reload 2>/dev/null || true
+    systemctl enable subscription 2>/dev/null || true
+    systemctl restart subscription 2>/dev/null || true
+    [[ -f /etc/vpn_script/subscription.token ]] || \
+        python3 /usr/local/lib/vpn_script/sub_server.py generate-token 2>/dev/null || true
     print_success "VPN Script library"
 }
 
@@ -892,6 +954,7 @@ function install_vpn_lib() {
 function instal(){
 clear
     install_vpn_lib
+    [[ -f /root/vpn_script.env ]] && /usr/local/sbin/apply-env /root/vpn_script.env 2>/dev/null || true
     checking_sc
     first_setup
     nginx_install
@@ -930,7 +993,7 @@ rm -rf /root/domain
 #sudo hostnamectl set-hostname $user
 secs_to_human "$(($(date +%s) - ${start}))"
 sudo hostnamectl set-hostname $username
-echo -e "${green} VPN Script installed successfully — stanlley_locke${NC}"
+echo -e "${green} VPN Script installed successfully — stanlley-locke${NC}"
 echo -e "${YELLOW} Root password (if generated): /root/.default-pass${NC}"
 echo -e "${YELLOW} Run 'menu' after reboot, or 'health-check' to verify services${NC}"
 echo ""

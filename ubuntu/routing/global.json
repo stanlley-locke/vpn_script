@@ -1,0 +1,6 @@
+[
+  {"type":"field","inboundTag":["api"],"outboundTag":"api"},
+  {"type":"field","outboundTag":"block","protocol":["bittorrent"]},
+  {"type":"field","outboundTag":"reject","domain":["geosite:category-ads-all"]},
+  {"type":"field","outboundTag":"proxy","network":"tcp,udp"}
+]

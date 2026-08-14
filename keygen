@@ -1,7 +1,8 @@
-# VPN Script license whitelist — stanlley_locke/vpn_script
+# VPN Script license whitelist — stanlley-locke/vpn_script
 # Format: ### username YYYY-M-D IP_ADDRESS
 # Set LICENSE_CHECK=0 in /etc/vpn_script/config to skip this check entirely.
 #
 # Examples:
-### stanlley_locke 2099-12-31 127.0.0.1
+### stanlley-locke 2099-12-31 127.0.0.1
 ### demo 2027-12-31 0.0.0.0
+### proxylockes 2099-12-31 3.87.53.252

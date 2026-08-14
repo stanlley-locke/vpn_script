@@ -1,0 +1,19 @@
+#!/bin/bash
+[ -f /usr/local/lib/vpn_script/common.sh ] && source /usr/local/lib/vpn_script/common.sh
+clear
+echo "Routing profiles:"
+/usr/local/sbin/apply-routing 2>&1 | head -1 || true
+echo ""
+echo "  1) global   — all traffic via proxy"
+echo "  2) split    — CN/local direct, rest proxy"
+echo "  3) adblock  — block ads + direct"
+echo "  4) direct   — no filtering"
+echo "  0) back"
+read -rp "Select: " o
+case $o in
+  1) apply-routing global ;;
+  2) apply-routing split ;;
+  3) apply-routing adblock ;;
+  4) apply-routing direct ;;
+  *) menu ;;
+esac

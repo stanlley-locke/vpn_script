@@ -113,7 +113,7 @@ Port OVPN TCP    : 1194
 Port OVPN UDP    : 2200
 BadVPN UDP       : 7100, 7300, 7300
 ◇━━━━━━━━━━━━━━━━━◇
-Payload WSS: GET wss://BUG.COM/ HTTP/1.1[crlf]Host: $domain[crlf]Upgrade: websocket[crlf][crlf] 
+Payload WSS: GET wss://${domain}/ HTTP/1.1[crlf]Host: $domain[crlf]Upgrade: websocket[crlf][crlf] 
 ◇━━━━━━━━━━━━━━━━━◇
 OVPN Download : https://$domain:81/
 ◇━━━━━━━━━━━━━━━━━◇

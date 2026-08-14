@@ -82,7 +82,7 @@ Button.inline(" 60 Day ","60")]])
 **» NetWork      :** `(WS) or (gRPC)`
 **» Path TLS     :** `(/multi path)/vmess`
 **» Path NLS     :** `(/multi path)/vmess`
-**» Path Dynamic :** `http://BUG.COM`
+**» Path Dynamic :** `http://{DOMAIN}`
 **» ServiceName  :** `vmess-grpc`
 **» Pub Key      :** `{PUB}`
 **━━━━━━━━━━━━━━━━━**
@@ -98,7 +98,7 @@ Button.inline(" 60 Day ","60")]])
 **» Format OpenClash :** https://{DOMAIN}:81/vmess-{user}.txt
 **━━━━━━━━━━━━━━━━━**
 **» Expired Until:** `{later}`
-**» 🤖@stanlley_locke**
+**» 🤖@stanlley-locke**
 """
 			await event.respond(msg)
 	chat = event.chat_id
@@ -177,7 +177,7 @@ Button.inline(" 60 Menit ","60")]])
 **» NetWork      :** `(WS) or (gRPC)`
 **» Path TLS     :** `(/multi path)/vmess`
 **» Path NLS     :** `(/multi path)/vmess`
-**» Path Dynamic :** `http://BUG.COM`
+**» Path Dynamic :** `http://{DOMAIN}`
 **» ServiceName  :** `vmess-grpc`
 **» Pub Key      :** `{PUB}`
 **━━━━━━━━━━━━━━━━━**
@@ -193,7 +193,7 @@ Button.inline(" 60 Menit ","60")]])
 **» Format OpenClash :** https://{DOMAIN}:81/vmess-{z["ps"]}.txt
 **━━━━━━━━━━━━━━━━━**
 **» Expired Until:** `{exp} Minutes`
-**» 🤖@stanlley_locke**
+**» 🤖@stanlley-locke**
 """
 			await event.respond(msg)
 	chat = event.chat_id
@@ -217,7 +217,7 @@ async def cek_vmess(event):
 {z}
 
 **Shows Logged In Users Vmess**
-**» 🤖@stanlley_locke**
+**» 🤖@stanlley-locke**
 """,buttons=[[Button.inline("‹ Main Menu ›","menu")]])
 	sender = await event.get_sender()
 	a = valid(str(sender.id))
@@ -267,7 +267,7 @@ Button.inline(" DELETE VMESS ","delete-vmess")],
 ✅ **» Hostname/IP:** `{DOMAIN}`
 ✅ **» ISP:** `{z["isp"]}`
 ✅ **» Country:** `{z["country"]}`
-🤖 **» @stanlley_locke**
+🤖 **» @stanlley-locke**
 ━━━━━━━━━━━━━━━━━━━━━━━ 
 """
 		await event.edit(msg,buttons=inline)

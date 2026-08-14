@@ -11,6 +11,7 @@ Button.inline(" VLESS MANAGER ","vless")],
 Button.inline(" SHDWSK MANAGER ","shadowsocks")],
 [Button.inline(" CHECK VPS INFO ","info"),
 Button.inline(" OTHER SETTING ","setting")],
+[Button.inline(" HTTP CUSTOM ","httpcustom")],
 [Button.inline(" ‹ Back Menu › ","start")]]
 	sender = await event.get_sender()
 	val = valid(str(sender.id))

@@ -160,7 +160,7 @@ service cron restart > /dev/null 2>&1
 cat >/var/www/html/vmess-$user.txt <<-END
 
 ◇━━━━━━━━━━━━━━━━━◇
-  VPN Script by stanlley_locke
+  VPN Script by stanlley-locke
 ◇━━━━━━━━━━━━━━━━━◇
 # Format Vmess WS TLS
 
