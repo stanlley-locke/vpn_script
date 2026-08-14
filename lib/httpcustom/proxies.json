@@ -175,6 +175,127 @@
       "description": "Vodacom TZ HTTP gateway.",
       "region": "tz",
       "tags": ["vodacom", "tanzania"]
+    },
+    {
+      "id": "proxy-cf-104-21-0-1-80",
+      "name": "Cloudflare 104.21.0.1:80",
+      "category": "cloudflare",
+      "host": "104.21.0.1",
+      "port": 80,
+      "protocol": "http",
+      "description": "Cloudflare anycast edge — 104.21.x.x range, port 80.",
+      "region": "global",
+      "tags": ["cloudflare", "port80"]
+    },
+    {
+      "id": "proxy-cf-172-67-0-1-80",
+      "name": "Cloudflare 172.67.0.1:80",
+      "category": "cloudflare",
+      "host": "172.67.0.1",
+      "port": 80,
+      "protocol": "http",
+      "description": "Cloudflare 172.67.x.x range — widely used in HTTP Custom configs.",
+      "region": "global",
+      "tags": ["cloudflare", "port80"]
+    },
+    {
+      "id": "proxy-cf-172-67-0-1-443",
+      "name": "Cloudflare 172.67.0.1:443",
+      "category": "cloudflare",
+      "host": "172.67.0.1",
+      "port": 443,
+      "protocol": "https",
+      "description": "Cloudflare 172.67.x.x range TLS — pair with your domain SNI.",
+      "region": "global",
+      "tags": ["cloudflare", "tls"]
+    },
+    {
+      "id": "proxy-cf-1-1-1-1-80",
+      "name": "Cloudflare 1.1.1.1:80",
+      "category": "cloudflare",
+      "host": "1.1.1.1",
+      "port": 80,
+      "protocol": "http",
+      "description": "Cloudflare public DNS IP — also serves as CF edge proxy on port 80.",
+      "region": "global",
+      "tags": ["cloudflare", "dns", "port80"]
+    },
+    {
+      "id": "proxy-cf-1-0-0-1-80",
+      "name": "Cloudflare 1.0.0.1:80",
+      "category": "cloudflare",
+      "host": "1.0.0.1",
+      "port": 80,
+      "protocol": "http",
+      "description": "Cloudflare secondary DNS IP — edge proxy fallback.",
+      "region": "global",
+      "tags": ["cloudflare", "dns", "port80"]
+    },
+    {
+      "id": "proxy-mtn-ng-8080",
+      "name": "MTN Nigeria direct 8080",
+      "category": "carrier",
+      "host": "10.199.212.2",
+      "port": 8080,
+      "protocol": "http",
+      "description": "MTN Nigeria carrier proxy IP — common internal gateway on MTN NG SIM.",
+      "region": "ng",
+      "tags": ["mtn", "nigeria", "8080"]
+    },
+    {
+      "id": "proxy-telkom-ke-8080",
+      "name": "Telkom Kenya 8080",
+      "category": "carrier",
+      "host": "10.28.1.229",
+      "port": 8080,
+      "protocol": "http",
+      "description": "Telkom Kenya carrier proxy — internal gateway on Telkom KE SIM.",
+      "region": "ke",
+      "tags": ["telkom", "kenya", "8080"]
+    },
+    {
+      "id": "proxy-glo-ng-8080",
+      "name": "Glo Nigeria 8080",
+      "category": "carrier",
+      "host": "10.128.0.1",
+      "port": 8080,
+      "protocol": "http",
+      "description": "Glo Nigeria carrier proxy — internal gateway on Glo NG SIM.",
+      "region": "ng",
+      "tags": ["glo", "nigeria", "8080"]
+    },
+    {
+      "id": "proxy-ethio-8080",
+      "name": "Ethio Telecom 8080",
+      "category": "carrier",
+      "host": "10.10.10.10",
+      "port": 8080,
+      "protocol": "http",
+      "description": "Ethio Telecom carrier proxy — internal gateway on Ethio SIM.",
+      "region": "et",
+      "tags": ["ethio", "ethiopia", "8080"]
+    },
+    {
+      "id": "proxy-zamtel-8080",
+      "name": "Zamtel Zambia 8080",
+      "category": "carrier",
+      "host": "10.20.0.1",
+      "port": 8080,
+      "protocol": "http",
+      "description": "Zamtel carrier proxy — internal gateway on Zamtel SIM.",
+      "region": "zm",
+      "tags": ["zamtel", "zambia", "8080"]
+    },
+    {
+      "id": "proxy-econet-zw-8080",
+      "name": "Econet Zimbabwe 8080",
+      "category": "carrier",
+      "host": "10.20.0.1",
+      "port": 8080,
+      "protocol": "http",
+      "description": "Econet ZW carrier proxy — internal gateway on Econet SIM.",
+      "region": "zw",
+      "tags": ["econet", "zimbabwe", "8080"]
     }
   ],
   "ports": {

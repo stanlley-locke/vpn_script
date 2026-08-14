@@ -350,6 +350,152 @@
         },
         "descriptionv5": "Vodacom Tanzania CF-RAY — stanlley-locke"
       }
+    },
+    {
+      "id": "profile-v5-mtn-ng-ssh",
+      "name": "HTTP Custom v5 — MTN Nigeria SSH",
+      "type": "ssh_ws",
+      "payload_id": "mtn-ng-smartapp-ws-v1",
+      "sni_id": "sni-mtn-smartapp",
+      "proxy_id": "proxy-mtn-smartapp-8080",
+      "template": {
+        "profilev5": {
+          "connection_mode": "3", "server_port": 8080, "custom_payload": "@payload",
+          "custom_host": "smartapp.mtnnigeria.net:8080", "custom_sni": "smartapp.mtnnigeria.net",
+          "custom_resolver": "1.1.1.1", "use_realm_host": false, "base_tunnel": 0, "isv5": true
+        },
+        "descriptionv5": "MTN Nigeria SmartApp — stanlley-locke"
+      }
+    },
+    {
+      "id": "profile-v5-mtn-ng-cfray-ssh",
+      "name": "HTTP Custom v5 — MTN Nigeria CF-RAY SSH",
+      "type": "ssh_ws",
+      "payload_id": "mtn-ng-cf-ray-v1",
+      "sni_id": "sni-cloudflare-104-18-8-127",
+      "proxy_id": "proxy-mtn-smartapp-8080",
+      "template": {
+        "profilev5": {
+          "connection_mode": "3", "server_port": 8080, "custom_payload": "@payload",
+          "custom_host": "smartapp.mtnnigeria.net:8080", "custom_sni": "104.18.8.127",
+          "custom_resolver": "1.1.1.1", "use_realm_host": false, "base_tunnel": 0, "isv5": true
+        },
+        "descriptionv5": "MTN Nigeria CF-RAY — stanlley-locke"
+      }
+    },
+    {
+      "id": "profile-v5-telkom-ke-ssh",
+      "name": "HTTP Custom v5 — Telkom Kenya SSH",
+      "type": "ssh_ws",
+      "payload_id": "telkom-ke-cf-ray-v1",
+      "sni_id": "sni-telkom-ke",
+      "proxy_id": "proxy-telkom-ke-8080",
+      "template": {
+        "profilev5": {
+          "connection_mode": "3", "server_port": 8080, "custom_payload": "@payload",
+          "custom_host": "10.28.1.229:8080", "custom_sni": "www.telkom.co.ke",
+          "custom_resolver": "1.1.1.1", "use_realm_host": false, "base_tunnel": 0, "isv5": true
+        },
+        "descriptionv5": "Telkom Kenya CF-RAY — stanlley-locke"
+      }
+    },
+    {
+      "id": "profile-v5-glo-ng-ssh",
+      "name": "HTTP Custom v5 — Glo Nigeria SSH",
+      "type": "ssh_ws",
+      "payload_id": "glo-ng-ws-v1",
+      "sni_id": "sni-glo-ng",
+      "proxy_id": "proxy-glo-ng-8080",
+      "template": {
+        "profilev5": {
+          "connection_mode": "3", "server_port": 8080, "custom_payload": "@payload",
+          "custom_host": "10.128.0.1:8080", "custom_sni": "www.gloworld.com",
+          "custom_resolver": "8.8.8.8", "use_realm_host": false, "base_tunnel": 0, "isv5": true
+        },
+        "descriptionv5": "Glo Nigeria — stanlley-locke"
+      }
+    },
+    {
+      "id": "profile-v5-ethio-ssh",
+      "name": "HTTP Custom v5 — Ethio Telecom SSH",
+      "type": "ssh_ws",
+      "payload_id": "ethio-connect-v1",
+      "sni_id": "sni-ethio-telecom",
+      "proxy_id": "proxy-ethio-8080",
+      "template": {
+        "profilev5": {
+          "connection_mode": "3", "server_port": 8080, "custom_payload": "@payload",
+          "custom_host": "10.10.10.10:8080", "custom_sni": "www.ethiotelecom.et",
+          "custom_resolver": "8.8.8.8", "use_realm_host": false, "base_tunnel": 0, "isv5": true
+        },
+        "descriptionv5": "Ethio Telecom CONNECT — stanlley-locke"
+      }
+    },
+    {
+      "id": "profile-v5-zamtel-ssh",
+      "name": "HTTP Custom v5 — Zamtel Zambia SSH",
+      "type": "ssh_ws",
+      "payload_id": "zamtel-ws-v1",
+      "sni_id": "sni-zamtel",
+      "proxy_id": "proxy-zamtel-8080",
+      "template": {
+        "profilev5": {
+          "connection_mode": "3", "server_port": 8080, "custom_payload": "@payload",
+          "custom_host": "10.20.0.1:8080", "custom_sni": "www.zamtel.co.zm",
+          "custom_resolver": "1.1.1.1", "use_realm_host": false, "base_tunnel": 0, "isv5": true
+        },
+        "descriptionv5": "Zamtel Zambia — stanlley-locke"
+      }
+    },
+    {
+      "id": "profile-v5-econet-zw-ssh",
+      "name": "HTTP Custom v5 — Econet Zimbabwe SSH",
+      "type": "ssh_ws",
+      "payload_id": "econet-zw-ws-v1",
+      "sni_id": "sni-econet-zw",
+      "proxy_id": "proxy-econet-zw-8080",
+      "template": {
+        "profilev5": {
+          "connection_mode": "3", "server_port": 8080, "custom_payload": "@payload",
+          "custom_host": "10.20.0.1:8080", "custom_sni": "www.econet.co.zw",
+          "custom_resolver": "8.8.8.8", "use_realm_host": false, "base_tunnel": 0, "isv5": true
+        },
+        "descriptionv5": "Econet Zimbabwe — stanlley-locke"
+      }
+    },
+    {
+      "id": "profile-v5-safaricom-selfcare-ssh",
+      "name": "HTTP Custom v5 — Safaricom Selfcare SSH",
+      "type": "ssh_ws",
+      "payload_id": "safaricom-selfcare-ws-v1",
+      "sni_id": "sni-safaricom-selfcare",
+      "proxy_id": "proxy-cf-104-17-3-81-80",
+      "template": {
+        "profilev5": {
+          "connection_mode": "3", "server_port": 443, "custom_payload": "@payload",
+          "custom_host": "@proxy_host:@proxy_port", "custom_sni": "selfcare.safaricom.co.ke",
+          "custom_resolver": "1.1.1.1", "use_realm_host": false, "base_tunnel": 0, "isv5": true
+        },
+        "descriptionv5": "Safaricom Selfcare zero-rated — stanlley-locke"
+      }
+    },
+    {
+      "id": "profile-v5-cf-workers-ssh",
+      "name": "HTTP Custom v5 — Cloudflare Workers SSH",
+      "type": "ssh_ws",
+      "payload_id": "cf-workers-ws-v1",
+      "sni_id": "sni-cf-workers",
+      "proxy_id": "proxy-cf-104-18-8-127-443",
+      "template": {
+        "profilev5": {
+          "connection_mode": "3", "server_port": 443, "custom_payload": "@payload",
+          "custom_host": "104.18.8.127:443", "custom_sni": "[subdomain].workers.dev",
+          "custom_resolver": "1.1.1.1", "use_realm_host": false, "preserve_sni": false,
+          "base_tunnel": 0, "isv5": true
+        },
+        "descriptionv5": "Cloudflare Workers fronting — stanlley-locke",
+        "notes": "Deploy a CF Worker proxying WebSocket to your origin. Set custom_sni to your worker subdomain."
+      }
     }
   ]
 }

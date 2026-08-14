@@ -199,6 +199,78 @@
       "host": "momodeveloper.mtn.com",
       "description": "MTN Mobile Money developer gateway.",
       "use_case": "mtn, momo, api"
+    },
+    {
+      "id": "sni-telkom-ke",
+      "name": "Telkom Kenya",
+      "category": "carrier",
+      "host": "www.telkom.co.ke",
+      "description": "Telkom Kenya portal — zero-rated on Telkom KE bundles.",
+      "use_case": "telkom, kenya, zero-rated"
+    },
+    {
+      "id": "sni-glo-ng",
+      "name": "Glo Nigeria",
+      "category": "carrier",
+      "host": "www.gloworld.com",
+      "description": "Glo Nigeria portal — zero-rated on Glo NG bundles.",
+      "use_case": "glo, nigeria, zero-rated"
+    },
+    {
+      "id": "sni-ethio-telecom",
+      "name": "Ethio Telecom",
+      "category": "carrier",
+      "host": "www.ethiotelecom.et",
+      "description": "Ethio Telecom portal — zero-rated on Ethio bundles.",
+      "use_case": "ethio, ethiopia, zero-rated"
+    },
+    {
+      "id": "sni-zamtel",
+      "name": "Zamtel Zambia",
+      "category": "carrier",
+      "host": "www.zamtel.co.zm",
+      "description": "Zamtel portal — zero-rated on Zamtel bundles.",
+      "use_case": "zamtel, zambia, zero-rated"
+    },
+    {
+      "id": "sni-econet-zw",
+      "name": "Econet Zimbabwe",
+      "category": "carrier",
+      "host": "www.econet.co.zw",
+      "description": "Econet ZW portal — zero-rated on Econet bundles.",
+      "use_case": "econet, zimbabwe, zero-rated"
+    },
+    {
+      "id": "sni-cf-workers",
+      "name": "Cloudflare Workers",
+      "category": "cloudflare",
+      "host": "[subdomain].workers.dev",
+      "description": "Cloudflare Workers subdomain — free relay for WebSocket fronting. Replace [subdomain] with your worker name.",
+      "use_case": "cloudflare, workers, fronting"
+    },
+    {
+      "id": "sni-cf-172-67-0-1",
+      "name": "Cloudflare 172.67.0.1",
+      "category": "cloudflare",
+      "host": "172.67.0.1",
+      "description": "Cloudflare 172.67.x.x anycast range — widely used as SNI in HTTP Custom.",
+      "use_case": "cloudflare, anycast, bypass"
+    },
+    {
+      "id": "sni-cf-104-21-0-1",
+      "name": "Cloudflare 104.21.0.1",
+      "category": "cloudflare",
+      "host": "104.21.0.1",
+      "description": "Cloudflare 104.21.x.x anycast range.",
+      "use_case": "cloudflare, anycast, bypass"
+    },
+    {
+      "id": "sni-safaricom-webchat",
+      "name": "Safaricom WebChat",
+      "category": "carrier",
+      "host": "webchat.safaricom.co.ke",
+      "description": "Safaricom webchat — zero-rated on all Safaricom bundles.",
+      "use_case": "safaricom, kenya, zero-rated"
     }
   ],
   "zerorate_hosts": {
@@ -240,6 +312,13 @@
     "mtn_gh": ["mtn.com.gh", "apps.mtn.com.gh"],
     "mtn_za": ["www.mtn.co.za", "mtn.co.za"],
     "vodacom_za": ["www.vodacom.co.za", "vodacom.co.za", "voda.co.za"],
-    "vodacom_tz": ["www.vodacom.co.tz", "vodacom.co.tz"]
+    "vodacom_tz": ["www.vodacom.co.tz", "vodacom.co.tz"],
+    "mtn_ng": ["smartapp.mtnnigeria.net", "mtnnigeria.net", "momodeveloper.mtn.com"],
+    "telkom_ke": ["www.telkom.co.ke", "telkom.co.ke", "my.telkom.co.ke", "selfcare.telkom.co.ke"],
+    "glo_ng": ["www.gloworld.com", "gloworld.com", "glo.ng"],
+    "ethio_et": ["www.ethiotelecom.et", "ethiotelecom.et", "telebirr.com"],
+    "zamtel_zm": ["www.zamtel.co.zm", "zamtel.co.zm"],
+    "econet_zw": ["www.econet.co.zw", "econet.co.zw", "ecocash.co.zw"],
+    "cloudflare_free": ["openwho.org", "africanstorybook.org", "workers.dev", "pages.dev"]
   }
 }
