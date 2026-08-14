@@ -34,7 +34,7 @@ green='\e[0;32m'
 
 clear
 # // Exporint IP AddressInformation
-export IP=$( curl -sS icanhazip.com )
+export IP=$(wget -qO- --timeout=10 ipv4.icanhazip.com 2>/dev/null || curl -4 -sS --max-time 10 ipv4.icanhazip.com 2>/dev/null || echo "")
 
 # // Clear Data
 clear
@@ -93,12 +93,11 @@ red='\e[1;31m'
 green='\e[0;32m'
 NC='\e[0m'
 #IZIN SCRIPT
-MYIP=$(curl -sS ipv4.icanhazip.com)
+MYIP=$(wget -qO- --timeout=10 ipv4.icanhazip.com 2>/dev/null || curl -4 -sS --max-time 10 ipv4.icanhazip.com 2>/dev/null || echo "")
 echo -e "\e[32mloading...\e[0m"
 clear
-apt install ruby -y
-gem install lolcat
-apt install wondershaper -y
+apt-get install -y ruby wondershaper 2>/dev/null || apt install -y ruby wondershaper -y
+gem install lolcat 2>/dev/null || true
 clear
 # REPO
 REPO="${VPN_REPO:-https://raw.githubusercontent.com/stanlley-locke/vpn_script/main/}"
@@ -112,7 +111,7 @@ fi
 
 # Remove broken HAProxy PPA from previous failed installs (Ubuntu 26.04 / resolute)
 rm -f /etc/apt/sources.list.d/*vbernat* /etc/apt/sources.list.d/haproxy.list 2>/dev/null || true
-add-apt-repository --remove -y ppa:vbernat/haproxy-2.0 2>/dev/null || true
+sed -i '/vbernat\/haproxy/d' /etc/apt/sources.list 2>/dev/null || true
 
 ####
 start=$(date +%s)
@@ -184,40 +183,12 @@ print_install "Create xray directory"
 
 # Change Environment System
 function install_haproxy() {
-    local os_id codename ver_major
-    os_id=$(. /etc/os-release && echo "${ID:-}")
-    codename=$(. /etc/os-release && echo "${VERSION_CODENAME:-}")
-    ver_major=$(. /etc/os-release && echo "${VERSION_ID:-0}" | cut -d. -f1)
-
+    print_install "Installing HAProxy"
     rm -f /etc/apt/sources.list.d/*vbernat* /etc/apt/sources.list.d/haproxy.list 2>/dev/null || true
-    add-apt-repository --remove -y ppa:vbernat/haproxy-2.0 2>/dev/null || true
+    sed -i '/vbernat\/haproxy/d' /etc/apt/sources.list 2>/dev/null || true
     apt-get update -y || true
     mkdir -p /etc/haproxy
-
-    if [[ "$os_id" == "ubuntu" ]] && { [[ "$codename" == "resolute" ]] || [[ "${ver_major:-0}" -ge 26 ]]; }; then
-        print_install "Installing HAProxy (Ubuntu ${VERSION_ID:-26} — distro package)"
-        apt-get install -y haproxy
-    elif [[ "$os_id" == "ubuntu" ]]; then
-        print_install "Installing HAProxy (Ubuntu PPA with fallback)"
-        if add-apt-repository -y ppa:vbernat/haproxy-2.0 2>/dev/null && apt-get update -y 2>/dev/null; then
-            apt-get install -y 'haproxy=3.0.*' 2>/dev/null || apt-get install -y haproxy
-        else
-            rm -f /etc/apt/sources.list.d/*vbernat* 2>/dev/null
-            apt-get update -y || true
-            apt-get install -y haproxy
-        fi
-    elif [[ "$os_id" == "debian" ]]; then
-        print_install "Installing HAProxy (Debian backports)"
-        curl -fsSL https://haproxy.debian.net/bernat.debian.org.gpg \
-            | gpg --dearmor >/usr/share/keyrings/haproxy.debian.net.gpg 2>/dev/null || true
-        echo deb "[signed-by=/usr/share/keyrings/haproxy.debian.net.gpg]" \
-            http://haproxy.debian.net bookworm-backports-2.8 main \
-            >/etc/apt/sources.list.d/haproxy.list 2>/dev/null || true
-        apt-get update -y || true
-        apt-get install -y haproxy 2>/dev/null || apt-get install -y haproxy
-    else
-        apt-get install -y haproxy || true
-    fi
+    apt-get install -y haproxy
     print_success "HAProxy"
 }
 

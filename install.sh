@@ -1,21 +1,19 @@
 #!/bin/bash
 # Quick install entry point — stanlley-locke/vpn_script
-# Usage:
-#   curl -fsSL .../install.sh | bash
-#   — with env file on VPS first —
-#   cp examples/vps.stanlleylocke.dev.env /root/vpn_script.env && nano /root/vpn_script.env
-#   curl -fsSL .../install.sh | bash
+# SAFE: download with wget first (curl may segfault on Ubuntu 26.04)
+#
+#   wget -qO /tmp/install.sh https://raw.githubusercontent.com/stanlley-locke/vpn_script/main/install.sh
+#   bash /tmp/install.sh
 
-set -euo pipefail
+set -e
 
 REPO="${VPN_REPO:-https://raw.githubusercontent.com/stanlley-locke/vpn_script/main}"
 
-if [[ "${EUID}" -ne 0 ]]; then
+if [[ "${EUID:-$(id -u)}" -ne 0 ]]; then
     echo "Run as root: sudo bash install.sh"
     exit 1
 fi
 
-# Load environment before install (non-interactive domain, CF settings, etc.)
 for envfile in /root/vpn_script.env ./vpn_script.env; do
     if [[ -f "$envfile" ]]; then
         echo "Loading config from ${envfile}"
@@ -29,6 +27,6 @@ for envfile in /root/vpn_script.env ./vpn_script.env; do
 done
 
 echo "Fetching installer from ${REPO}..."
-wget -qO /tmp/genz.sh "${REPO}/genz.sh"
+wget -qO /tmp/genz.sh "${REPO}/genz.sh" || { echo "Download failed — use: apt install wget"; exit 1; }
 chmod +x /tmp/genz.sh
-exec /tmp/genz.sh "$@"
+exec bash /tmp/genz.sh "$@"
