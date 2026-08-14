@@ -1,7 +1,12 @@
 #!/bin/bash
-[ -f /usr/local/lib/vpn_script/common.sh ] && source /usr/local/lib/vpn_script/common.sh
 # VPN Script shared library — stanlley-locke/vpn_script
 # Installed to /usr/local/lib/vpn_script/common.sh during setup.
+
+# Prevent recursive self-load (was: source itself → stack overflow / segfault)
+if [[ "${VPN_COMMON_LOADED:-}" == "1" ]]; then
+    return 0
+fi
+VPN_COMMON_LOADED=1
 
 readonly VPN_GITHUB_USER="${VPN_GITHUB_USER:-stanlley-locke}"
 readonly VPN_REPO_NAME="${VPN_REPO_NAME:-vpn_script}"
@@ -27,14 +32,13 @@ vpn_load_config() {
 }
 
 vpn_get_public_ip() {
-    curl -4 -sS --max-time 10 ipv4.icanhazip.com 2>/dev/null \
-        || wget -qO- ipv4.icanhazip.com 2>/dev/null \
+    wget -qO- --timeout=10 ipv4.icanhazip.com 2>/dev/null \
         || echo ""
 }
 
 vpn_date_from_web() {
-    curl -v --insecure --silent https://google.com/ 2>&1 \
-        | grep -i Date | sed -e 's/< Date: //' | head -n1
+    wget -S --timeout=10 -O /dev/null https://google.com/ 2>&1 \
+        | grep -i Date | sed -e 's/.*Date: //' | head -n1
 }
 
 checking_sc() {
@@ -47,7 +51,7 @@ checking_sc() {
     ipsaya="$(vpn_get_public_ip)"
     date_server="$(vpn_date_from_web)"
     date_list="$(date +"%Y-%m-%d" -d "${date_server:-now}" 2>/dev/null || date +"%Y-%m-%d")"
-    useexp="$(curl -sS --max-time 15 "${VPN_KEYGEN_URL}" | grep -F "${ipsaya}" | awk '{print $3}' | head -n1)"
+    useexp="$(wget -qO- --timeout=15 "${VPN_KEYGEN_URL}" 2>/dev/null | grep -F "${ipsaya}" | awk '{print $3}' | head -n1)"
 
     if [[ -n "${useexp}" && "${date_list}" < "${useexp}" ]]; then
         return 0
@@ -74,7 +78,8 @@ vpn_send_install_notify() {
     local text url
     text="<b>${VPN_SCRIPT_NAME} — Install Complete</b>%0AIP: $(vpn_get_public_ip)%0ADomain: ${domain:-unknown}%0ABy: ${VPN_AUTHOR}"
     url="https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage"
-    curl -sS --max-time 10 -d "chat_id=${TELEGRAM_CHAT_ID}&text=${text}&parse_mode=html" "$url" >/dev/null 2>&1 || true
+    wget -qO- --timeout=10 --post-data="chat_id=${TELEGRAM_CHAT_ID}&text=${text}&parse_mode=html" \
+        "$url" >/dev/null 2>&1 || true
 }
 
 vpn_print_ok()    { echo -e "\033[92;1m  »\033[0m \033[36m $1 \033[0m"; }
