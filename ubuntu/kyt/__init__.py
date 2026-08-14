@@ -1,7 +1,7 @@
 from telethon import *
 import datetime as DT
-from telethon import *
-import requests,time,os,subprocess,re,sqlite3,sys,random,base64,json,math
+import asyncio
+import requests, time, os, subprocess, re, sqlite3, sys, random, base64, json, math
 import logging
 
 logging.basicConfig(level=logging.INFO)
