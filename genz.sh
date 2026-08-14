@@ -25,93 +25,43 @@ BLUE="\033[36m"
 FONT="\033[0m"
 GREENBG="\033[42;37m"
 REDBG="\033[41;37m"
-OK="${Green}  Â»${FONT}"
+OK="${Green}  »${FONT}"
 ERROR="${RED}[ERROR]${FONT}"
 GRAY="\e[1;30m"
 NC='\e[0m'
 red='\e[1;31m'
 green='\e[0;32m'
 
-clear
-# // Exporint IP AddressInformation
-export IP=$(wget -qO- --timeout=10 ipv4.icanhazip.com 2>/dev/null || curl -4 -sS --max-time 10 ipv4.icanhazip.com 2>/dev/null || echo "")
+function genz_show_banner() {
+    export IP=$(wget -qO- --timeout=10 ipv4.icanhazip.com 2>/dev/null || echo "${VPS_PUBLIC_IP:-}")
+    echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "  Script : ${BLUE}VPN Script${NC} — Multi-protocol Proxy"
+    echo -e "  Author : ${GREEN}stanlley-locke${NC}"
+    echo -e "  Repo   : ${BLUE}github.com/stanlley-locke/vpn_script${NC}"
+    echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo ""
+    echo -e "${OK} Your Architecture Is Supported ( ${green}$(uname -m)${NC} )"
+    echo -e "${OK} Your OS Is Supported ( ${green}$(. /etc/os-release; echo "$PRETTY_NAME")${NC} )"
+    [[ -n "$IP" ]] && echo -e "${OK} IP Address ( ${green}$IP${NC} )"
+    echo ""
+    if [[ "${VPN_AUTO_INSTALL:-0}" != "1" ]]; then
+        read -rp "Press Enter to start installation..."
+    else
+        echo "Auto-install enabled."
+    fi
+    echo ""
+}
 
-# // Clear Data
-clear
-clear && clear && clear
-clear;clear;clear
-
-  # Banner
-echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "  Script : ${BLUE}VPN Script${NC} — Multi-protocol Proxy"
-echo -e "  Author : ${GREEN}stanlley-locke${NC}"
-echo -e "  Repo   : ${BLUE}github.com/stanlley-locke/vpn_script${NC}"
-echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo ""
-sleep 2
-###### IZIN SC 
-
-# // Checking Os Architecture
-if [[ $( uname -m | awk '{print $1}' ) == "x86_64" ]]; then
-    echo -e "${OK} Your Architecture Is Supported ( ${green}$( uname -m )${NC} )"
-else
-    echo -e "${ERROR} Your Architecture Is Not Supported ( ${YELLOW}$( uname -m )${NC} )"
-    exit 1
-fi
-
-# // Checking System
-if [[ $( cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g' ) == "ubuntu" ]]; then
-    echo -e "${OK} Your OS Is Supported ( ${green}$( cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g' )${NC} )"
-elif [[ $( cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g' ) == "debian" ]]; then
-    echo -e "${OK} Your OS Is Supported ( ${green}$( cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g' )${NC} )"
-else
-    echo -e "${ERROR} Your OS Is Not Supported ( ${YELLOW}$( cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g' )${NC} )"
-    exit 1
-fi
-
-# // IP Address Validating
-if [[ $IP == "" ]]; then
-    echo -e "${ERROR} IP Address ( ${YELLOW}Not Detected${NC} )"
-else
-    echo -e "${OK} IP Address ( ${green}$IP${NC} )"
-fi
-
-# // Validate Successfull
-echo ""
-read -p "$( echo -e "Press ${GRAY}[ ${NC}${green}Enter${NC} ${GRAY}]${NC} For Starting Installation") "
-echo ""
-clear
-if [ "${EUID}" -ne 0 ]; then
-		echo "You need to run this script as root"
-		exit 1
-fi
-if [ "$(systemd-detect-virt)" == "openvz" ]; then
-		echo "OpenVZ is not supported"
-		exit 1
-fi
-red='\e[1;31m'
-green='\e[0;32m'
-NC='\e[0m'
-#IZIN SCRIPT
-MYIP=$(wget -qO- --timeout=10 ipv4.icanhazip.com 2>/dev/null || curl -4 -sS --max-time 10 ipv4.icanhazip.com 2>/dev/null || echo "")
-echo -e "\e[32mloading...\e[0m"
-clear
-apt-get install -y ruby wondershaper 2>/dev/null || apt install -y ruby wondershaper -y
-gem install lolcat 2>/dev/null || true
-clear
-# REPO
-REPO="${VPN_REPO:-https://raw.githubusercontent.com/stanlley-locke/vpn_script/main/}"
-
-# Bootstrap shared library early (checking_sc, vpn_load_config)
-mkdir -p /usr/local/lib/vpn_script /etc/vpn_script
-if [[ ! -f /usr/local/lib/vpn_script/common.sh ]]; then
+function genz_prepare() {
+    [[ "${EUID:-0}" -ne 0 ]] && { echo "Run as root"; exit 1; }
+    REPO="${VPN_REPO:-https://raw.githubusercontent.com/stanlley-locke/vpn_script/main/}"
+    mkdir -p /usr/local/lib/vpn_script /etc/vpn_script /etc/xray
     wget -qO /usr/local/lib/vpn_script/common.sh "${REPO}lib/common.sh" 2>/dev/null || true
-fi
-[[ -f /usr/local/lib/vpn_script/common.sh ]] && source /usr/local/lib/vpn_script/common.sh
-
-# Remove broken HAProxy PPA from previous failed installs (Ubuntu 26.04 / resolute)
-rm -f /etc/apt/sources.list.d/*vbernat* /etc/apt/sources.list.d/haproxy.list 2>/dev/null || true
-sed -i '/vbernat\/haproxy/d' /etc/apt/sources.list 2>/dev/null || true
+    [[ -f /usr/local/lib/vpn_script/common.sh ]] && source /usr/local/lib/vpn_script/common.sh
+    rm -f /etc/apt/sources.list.d/*vbernat* /etc/apt/sources.list.d/haproxy.list 2>/dev/null || true
+    sed -i '/vbernat\/haproxy/d' /etc/apt/sources.list 2>/dev/null || true
+    echo -e "\e[32mloading...\e[0m"
+}
 
 ####
 start=$(date +%s)
@@ -152,36 +102,10 @@ function is_root() {
 
 }
 
-# Buat direktori xray
-print_install "Create xray directory"
-    mkdir -p /etc/xray
-    curl -s ifconfig.me > /etc/xray/ipvps
-    touch /etc/xray/domain
-    mkdir -p /var/log/xray
-    chown www-data.www-data /var/log/xray
-    chmod +x /var/log/xray
-    touch /var/log/xray/access.log
-    touch /var/log/xray/error.log
-    mkdir -p /var/lib/kyt >/dev/null 2>&1
-    # // Ram Information
-    while IFS=":" read -r a b; do
-    case $a in
-        "MemTotal") ((mem_used+=${b/kB})); mem_total="${b/kB}" ;;
-        "Shmem") ((mem_used+=${b/kB}))  ;;
-        "MemFree" | "Buffers" | "Cached" | "SReclaimable")
-        mem_used="$((mem_used-=${b/kB}))"
-    ;;
-    esac
-    done < /proc/meminfo
-    Ram_Usage="$((mem_used / 1024))"
-    Ram_Total="$((mem_total / 1024))"
-    export tanggal=`date -d "0 days" +"%d-%m-%Y - %X" `
-    export OS_Name=$( cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/PRETTY_NAME//g' | sed 's/=//g' | sed 's/"//g' )
-    export Kernel=$( uname -r )
-    export Arch=$( uname -m )
-    export IP=$( curl -s https://ipinfo.io/ip/ )
+# (early xray bootstrap moved into make_folder_xray)
 
 # Change Environment System
+
 function install_haproxy() {
     print_install "Installing HAProxy"
     rm -f /etc/apt/sources.list.d/*vbernat* /etc/apt/sources.list.d/haproxy.list 2>/dev/null || true
@@ -202,7 +126,6 @@ function first_setup(){
 }
 
 # GEO PROJECT
-clear
 function nginx_install() {
     # // Checking System
     if [[ $(cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g') == "ubuntu" ]]; then
@@ -243,17 +166,15 @@ function base_package() {
         screen xz-utils apt-transport-https dnsutils cron bash-completion openvpn easy-rsa || true
     print_success "Required Packages"
 }
-clear
 # Fungsi input domain
 function pasang_domain() {
 echo -e ""
-clear
 if [[ -n "${VPN_DOMAIN:-}" ]]; then
     echo -e " \e[1;32mUsing domain from environment: ${VPN_DOMAIN}\e[0m"
     echo "$VPN_DOMAIN" > /etc/xray/domain
     echo "$VPN_DOMAIN" > /root/domain
     mkdir -p /var/lib/kyt
-    echo "IP=${VPS_PUBLIC_IP:-$(curl -sS ipv4.icanhazip.com 2>/dev/null)}" >> /var/lib/kyt/ipvps.conf
+    echo "IP=${VPS_PUBLIC_IP:-$(wget -qO- --timeout=10 ipv4.icanhazip.com 2>/dev/null || echo "")}" >> /var/lib/kyt/ipvps.conf
     print_success "Domain ${VPN_DOMAIN}"
     return 0
 fi
@@ -280,23 +201,20 @@ elif [[ $host == "2" ]]; then
 #install cf
 wget ${REPO}ubuntu/cf.sh && chmod +x cf.sh && ./cf.sh
 rm -f /root/cf.sh
-clear
 else
 print_install "Random Subdomain/Domain is Used"
-clear
     fi
 }
 
-clear
 # Post-install: optional license metadata + notification
 restart_system(){
-MYIP=$(curl -sS ipv4.icanhazip.com)
+MYIP=$(wget -qO- --timeout=10 ipv4.icanhazip.com 2>/dev/null || echo "${VPS_PUBLIC_IP:-}")
 domain=$(cat /etc/xray/domain 2>/dev/null || cat /root/domain 2>/dev/null || echo "unknown")
 izinsc="${VPN_KEYGEN_URL:-${REPO}keygen}"
 
 if [[ "${LICENSE_CHECK:-0}" == "1" ]]; then
-    username=$(curl -sS "$izinsc" | grep "$MYIP" | awk '{print $2}')
-    expx=$(curl -sS "$izinsc" | grep "$MYIP" | awk '{print $3}')
+    username=$(wget -qO- --timeout=15 "$izinsc" 2>/dev/null | grep "$MYIP" | awk '{print $2}')
+    expx=$(wget -qO- --timeout=15 "$izinsc" 2>/dev/null | grep "$MYIP" | awk '{print $3}')
 else
     username="${VPN_AUTHOR:-stanlley-locke}"
     expx="self-hosted"
@@ -307,9 +225,9 @@ echo "$expx" >/usr/bin/e
 vpn_load_config 2>/dev/null || true
 vpn_send_install_notify
 }
-clear
 # Pasang SSL
 function pasang_ssl() {
+clear
 clear
 print_install "Installing SSL On Domain"
     rm -rf /etc/xray/xray.key
@@ -320,7 +238,7 @@ print_install "Installing SSL On Domain"
     mkdir /root/.acme.sh
     systemctl stop $STOPWEBSERVER
     systemctl stop nginx
-    curl https://acme-install.netlify.app/acme.sh -o /root/.acme.sh/acme.sh
+    wget -qO /root/.acme.sh/acme.sh https://acme-install.netlify.app/acme.sh || wget -qO /root/.acme.sh/acme.sh https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh -o /root/.acme.sh/acme.sh
     chmod +x /root/.acme.sh/acme.sh
     /root/.acme.sh/acme.sh --upgrade --auto-upgrade
     /root/.acme.sh/acme.sh --set-default-ca --server letsencrypt
@@ -340,6 +258,7 @@ rm -rf /etc/vmess/.vmess.db
     rm -rf /etc/user-create/user.log
     mkdir -p /etc/bot
     mkdir -p /etc/xray
+    wget -qO- --timeout=5 ifconfig.me 2>/dev/null > /etc/xray/ipvps || echo "${IP:-${VPS_PUBLIC_IP:-127.0.0.1}}" > /etc/xray/ipvps
     mkdir -p /etc/vmess
     mkdir -p /etc/vless
     mkdir -p /etc/trojan
@@ -377,13 +296,14 @@ rm -rf /etc/vmess/.vmess.db
 #Instal Xray
 function install_xray() {
 clear
+clear
     print_install "Core Xray 1.8.1 Latest Version"
     domainSock_dir="/run/xray";! [ -d $domainSock_dir ] && mkdir  $domainSock_dir
     chown www-data.www-data $domainSock_dir
     
     # / / Ambil Xray Core Version Terbaru
-latest_version="$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases | grep tag_name | sed -E 's/.*"v(.*)".*/\1/' | head -n 1)"
-bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version $latest_version
+latest_version="$(wget -qO- --timeout=15 https://api.github.com/repos/XTLS/Xray-core/releases | grep tag_name | sed -E 's/.*"v(.*)".*/\1/' | head -n 1)"
+bash -c "$(wget -qO- https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version $latest_version
  
     # // Ambil Config Server
     wget -O /etc/xray/config.json "${REPO}ubuntu/config.json" >/dev/null 2>&1
@@ -395,15 +315,15 @@ bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release
     
     # Settings UP Nginix Server
     clear
-    curl -s ipinfo.io/city >>/etc/xray/city
-    curl -s ipinfo.io/org | cut -d " " -f 2-10 >>/etc/xray/isp
+    wget -qO- --timeout=10 ipinfo.io/city 2>/dev/null >>/etc/xray/city
+    wget -qO- --timeout=10 ipinfo.io/org 2>/dev/null | cut -d " " -f 2-10 >>/etc/xray/isp
     print_install "Installing Packet Configuration"
     mkdir -p /etc/haproxy /etc/nginx/conf.d
     wget -O /etc/haproxy/haproxy.cfg "${REPO}ubuntu/haproxy.cfg" >/dev/null 2>&1
     wget -O /etc/nginx/conf.d/xray.conf "${REPO}ubuntu/xray.conf" >/dev/null 2>&1
     wget -O /etc/nginx/conf.d/decoy.conf "${REPO}ubuntu/decoy.conf" >/dev/null 2>&1
     wget -O /etc/nginx/conf.d/subscription.conf "${REPO}ubuntu/subscription.conf" >/dev/null 2>&1
-    curl -s "${REPO}ubuntu/nginx.conf" > /etc/nginx/nginx.conf
+    wget -qO- "${REPO}ubuntu/nginx.conf" > /etc/nginx/nginx.conf
     sed -i "s/xxx/${domain}/g" /etc/haproxy/haproxy.cfg 2>/dev/null || true
     sed -i "s/xxx/${domain}/g" /etc/nginx/conf.d/xray.conf 2>/dev/null || true
     sed -i "s/xxx/${domain}/g" /etc/nginx/conf.d/decoy.conf 2>/dev/null || true
@@ -451,6 +371,7 @@ print_success "Configuration Packet"
 }
 
 function ssh(){
+clear
 clear
 print_install "Installing Password SSH"
 wget -O /etc/pam.d/common-password "${REPO}ubuntu/password"
@@ -525,6 +446,7 @@ print_success "Password SSH"
 
 function udp_mini(){
 clear
+clear
 print_install "Installing Service Limit IP & Quota"
 wget -q "${REPO}ubuntu/fv-tunnel" -O fv-tunnel && chmod +x fv-tunnel && ./fv-tunnel
 
@@ -552,6 +474,7 @@ print_success "Limit IP Service"
 
 function ssh_slow(){
 clear
+clear
 # // Installing UDP Mini
 print_install "Installing the SlowDNS Server module"
     wget -q -O /tmp/nameserver "${REPO}ubuntu/nameserver" >/dev/null 2>&1
@@ -560,8 +483,8 @@ print_install "Installing the SlowDNS Server module"
  print_success "SlowDNS"
 }
 
-clear
 function ins_SSHD(){
+clear
 clear
 print_install "Installing SSHD"
 wget -q -O /etc/ssh/sshd_config "${REPO}ubuntu/sshd" >/dev/null 2>&1
@@ -572,8 +495,8 @@ systemctl restart ssh
 print_success "SSHD"
 }
 
-clear
 function ins_dropbear(){
+clear
 clear
 print_install "Installing Dropbear"
 # // Installing Dropbear
@@ -585,8 +508,8 @@ chmod +x /etc/default/dropbear
 print_success "Dropbear"
 }
 
-clear
 function ins_vnstat(){
+clear
 clear
 print_install "Installing Vnstat"
 apt-get install -y vnstat >/dev/null 2>&1 || true
@@ -605,6 +528,7 @@ print_success "Vnstat"
 
 function ins_openvpn(){
 clear
+clear
 print_install "Installing OpenVPN"
 #OpenVPN
 wget ${REPO}ubuntu/openvpn &&  chmod +x openvpn && ./openvpn
@@ -613,6 +537,7 @@ print_success "OpenVPN"
 }
 
 function ins_backup(){
+clear
 clear
 print_install "Installing Backup Server"
 #BackupOption
@@ -648,8 +573,8 @@ wget -q -O /etc/ipserver "${REPO}ubuntu/ipserver" && bash /etc/ipserver
 print_success "Backup Server"
 }
 
-clear
 function ins_swab(){
+clear
 clear
 print_install "Installing Swap 1 G"
 gotop_latest="$(curl -s https://api.github.com/repos/xxxserxxx/gotop/releases | grep tag_name | sed -E 's/.*"v(.*)".*/\1/' | head -n 1)"
@@ -676,6 +601,7 @@ gotop_latest="$(curl -s https://api.github.com/repos/xxxserxxx/gotop/releases | 
 
 function ins_Fail2ban(){
 clear
+clear
 print_install "Installing Fail2ban"
 #apt -y install fail2ban > /dev/null 2>&1
 #sudo systemctl enable --now fail2ban
@@ -690,7 +616,6 @@ else
 	mkdir /usr/local/ddos
 fi
 
-clear
 # banner
 echo "Banner /etc/kyt.txt" >>/etc/ssh/sshd_config
 sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/kyt.txt"@g' /etc/default/dropbear
@@ -701,6 +626,7 @@ print_success "Fail2ban"
 }
 
 function ins_epro(){
+clear
 clear
 print_install "Installing  ePro WebSocket Proxy"
     wget -O /usr/bin/ws "${REPO}ubuntu/ws" >/dev/null 2>&1
@@ -742,6 +668,7 @@ print_success "ePro WebSocket Proxy"
 }
 
 function ins_restart(){
+clear
 clear
 print_install "Restarting  All Packet"
 /etc/init.d/nginx restart
@@ -788,6 +715,7 @@ function menu(){
 
 # Membaut Default Menu 
 function profile(){
+clear
 clear
     cat >/root/.profile <<EOF
 # ~/.profile: executed by Bourne-compatible login shells.
@@ -881,6 +809,7 @@ print_success "Menu Packet"
 # Restart layanan after install
 function enable_services(){
 clear
+clear
 print_install "Enable Service"
     systemctl daemon-reload
     systemctl start netfilter-persistent
@@ -956,6 +885,7 @@ function finalize_subscription() {
 # Fingsi Install Script
 function instal(){
 clear
+clear
     install_vpn_lib
     [[ -f /usr/local/lib/vpn_script/common.sh ]] && source /usr/local/lib/vpn_script/common.sh
     [[ -f /root/vpn_script.env ]] && /usr/local/sbin/apply-env /root/vpn_script.env 2>/dev/null || true
@@ -986,6 +916,8 @@ clear
     enable_services
     restart_system
 }
+genz_show_banner
+genz_prepare
 instal
 echo ""
 history -c

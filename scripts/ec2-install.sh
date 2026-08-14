@@ -44,6 +44,7 @@ set -a
 source "$ENV_DEST"
 set +a
 export VPN_ENV_FILE="$ENV_DEST"
+export VPN_AUTO_INSTALL=1
 
 echo ""
 echo "Starting install (domain: ${VPN_DOMAIN:-vps.stanlleylocke.dev})..."
