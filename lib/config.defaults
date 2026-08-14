@@ -1,0 +1,26 @@
+# VPN Script runtime configuration
+# Copy to /etc/vpn_script/config during install.
+# Managed by stanlley_locke/vpn_script
+
+# Repository (override if using a fork)
+VPN_GITHUB_USER="stanlley_locke"
+VPN_REPO_NAME="vpn_script"
+VPN_REPO_BRANCH="main"
+
+# License: 0 = disabled (self-hosted), 1 = check keygen file on GitHub
+LICENSE_CHECK="0"
+
+# Optional install notification via your own Telegram bot
+INSTALL_NOTIFY="0"
+TELEGRAM_BOT_TOKEN=""
+TELEGRAM_CHAT_ID=""
+
+# Branding
+VPN_SCRIPT_NAME="VPN Script"
+VPN_AUTHOR="stanlley_locke"
+SUPPORT_TELEGRAM="@stanlley_locke"
+
+# Cloudflare API (optional — used by cf.sh for random subdomains)
+CF_EMAIL=""
+CF_API_KEY=""
+CF_DOMAIN=""

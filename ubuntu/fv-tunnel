@@ -1,14 +1,15 @@
 #!/bin/bash
+[ -f /usr/local/lib/vpn_script/common.sh ] && source /usr/local/lib/vpn_script/common.sh
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # System Request : Debian 9+/Ubuntu 18.04+/20+
 # Develovers » Whiterose
 # Email      » Www.kheedrasachi@gmail.com
-# telegram   » https://t.me/Legion_Lemmar
-# whatsapp   » wa.me/+254792503850
+# telegram   » https://github.com/stanlley_locke
+# whatsapp   » github.com/stanlley_locke/vpn_script
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # Lemmar
 
-REPO="https://raw.githubusercontent.com/chikuno/Script/main/"
+REPO="https://raw.githubusercontent.com/stanlley_locke/vpn_script/main/"
 
 wget -q -O /etc/systemd/system/limitvmess.service "${REPO}ubuntu/limitvmess.service" && chmod +x limitvmess.service >/dev/null 2>&1
 wget -q -O /etc/systemd/system/limitvless.service "${REPO}ubuntu/limitvless.service" && chmod +x limitvless.service >/dev/null 2>&1

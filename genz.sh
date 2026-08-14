@@ -1,12 +1,9 @@
 #!/bin/bash
-# â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
-# System Request : Debian 9+/Ubuntu 18.04+/20+
-# Develovers Â» ðŸ—½ðŸ¥·ðŸŽ®ðŸ§‘â€ðŸ’»ðŸ”«NETCORE ðŸ¥·ðŸ§‘â€ðŸ’»ðŸ—½LEMMAR
-# Email      Â» Www.kheedrasachi@gmail.com
-# telegram   Â» https://t.me/legion_lemmar
-# whatsapp   Â» wa.me/++254792503850
-# â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
-# ðŸ§‘â€ðŸ’»ðŸ´â„1¤7â˜ ï¸ðŸ¥·ðŸ—„1¤7 Whiterose script ðŸ§‘â€ðŸ’»ðŸ´â„1¤7â˜ ï¸ðŸ¥·ðŸ—„1¤7
+[ -f /usr/local/lib/vpn_script/common.sh ] && source /usr/local/lib/vpn_script/common.sh
+# VPN Script — Multi-protocol proxy installer
+# Author  : stanlley_locke
+# Repo    : https://github.com/stanlley_locke/vpn_script
+# OS      : Debian 10+ / Ubuntu 18.04–24.04 (x86_64)
 
 Green="\e[92;1m"
 RED="\033[31m"
@@ -31,12 +28,12 @@ clear
 clear && clear && clear
 clear;clear;clear
 
-  # // Banner
-echo -e "${YELLOW}â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”${NC}"
-echo -e "  Script : ${RED} ð–ð„ð‹ð‚ðŽðŒð„ ð“ðŽ ðŸ”«â˜ï¸ðŸ´â€â˜ ðŸ§‘â€ðŸ’»â˜LEMMAR ð’ð“ðŽð‘ð„ ${NC}"
-echo -e "  Author : ${RED}â›·ï¸ðŸ„ðŸ‚ðŸ–¥ï¸ðŸ¼â˜£ï¸â›½ðŸ´â€â˜ ï¸ðŸ¥·ðŸ¥¸ðŸ—½ðŸ”«ðŸŽ®â˜ï¸â˜ï¸„1¤7 LEMMAR ${NC}${YELLOW}${NC}"
-echo -e "  Â©2024  : ${BLUE} VVIPâ˜ï¸ðŸŽ®ðŸ”«â™¾ï¸ðŸ—½ðŸ¥¸ðŸ¥·ðŸ´â€â˜ ï¸ðŸ„â›·ï¸â˜£ï¸ðŸ¼âŒ¨ï¸ðŸ’»ðŸª©ðŸŒðŸŒ„1¤7 ð„ðƒðˆð“ðˆðŽð ${NC}"
-echo -e "${YELLOW}â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”${NC}"
+  # Banner
+echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "  Script : ${BLUE}VPN Script${NC} — Multi-protocol Proxy"
+echo -e "  Author : ${GREEN}stanlley_locke${NC}"
+echo -e "  Repo   : ${BLUE}github.com/stanlley_locke/vpn_script${NC}"
+echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo ""
 sleep 2
 ###### IZIN SC 
@@ -45,7 +42,7 @@ sleep 2
 if [[ $( uname -m | awk '{print $1}' ) == "x86_64" ]]; then
     echo -e "${OK} Your Architecture Is Supported ( ${green}$( uname -m )${NC} )"
 else
-    echo -e "${EROR} Your Architecture Is Not Supported ( ${YELLOW}$( uname -m )${NC} )"
+    echo -e "${ERROR} Your Architecture Is Not Supported ( ${YELLOW}$( uname -m )${NC} )"
     exit 1
 fi
 
@@ -55,13 +52,13 @@ if [[ $( cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//
 elif [[ $( cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g' ) == "debian" ]]; then
     echo -e "${OK} Your OS Is Supported ( ${green}$( cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g' )${NC} )"
 else
-    echo -e "${EROR} Your OS Is Not Supported ( ${YELLOW}$( cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g' )${NC} )"
+    echo -e "${ERROR} Your OS Is Not Supported ( ${YELLOW}$( cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g' )${NC} )"
     exit 1
 fi
 
 # // IP Address Validating
 if [[ $IP == "" ]]; then
-    echo -e "${EROR} IP Address ( ${YELLOW}Not Detected${NC} )"
+    echo -e "${ERROR} IP Address ( ${YELLOW}Not Detected${NC} )"
 else
     echo -e "${OK} IP Address ( ${green}$IP${NC} )"
 fi
@@ -90,8 +87,8 @@ apt install ruby -y
 gem install lolcat
 apt install wondershaper -y
 clear
-# REPO    
-    REPO="https://raw.githubusercontent.com/chikuno/Script/main/"
+# REPO
+REPO="${VPN_REPO:-https://raw.githubusercontent.com/stanlley_locke/vpn_script/main/}"
 
 ####
 start=$(date +%s)
@@ -272,71 +269,24 @@ clear
 }
 
 clear
-#GANTI PASSWORD DEFAULT
+# Post-install: optional license metadata + notification
 restart_system(){
-#IZIN SCRIPT
 MYIP=$(curl -sS ipv4.icanhazip.com)
-echo -e "\e[32mloading...\e[0m" 
-clear
-izinsc="https://raw.githubusercontent.com/chikuno/Script/main/keygen"
-# USERNAME
-rm -f /usr/bin/user
-username=$(curl $izinsc | grep $MYIP | awk '{print $2}')
-echo "$username" >/usr/bin/user
-expx=$(curl $izinsc | grep $MYIP | awk '{print $3}')
-echo "$expx" >/usr/bin/e
-# DETAIL ORDER
-username=$(cat /usr/bin/user)
-oid=$(cat /usr/bin/ver)
-exp=$(cat /usr/bin/e)
-clear
-# CERTIFICATE STATUS
-d1=$(date -d "$valid" +%s)
-d2=$(date -d "$today" +%s)
-certifacate=$(((d1 - d2) / 86400))
-# VPS Information
-DATE=$(date +'%Y-%m-%d')
-datediff() {
-    d1=$(date -d "$1" +%s)
-    d2=$(date -d "$2" +%s)
-    echo -e "$COLOR1 $NC Expiry In   : $(( (d1 - d2) / 86400 )) Days"
-}
-mai="datediff "$Exp" "$DATE""
+domain=$(cat /etc/xray/domain 2>/dev/null || cat /root/domain 2>/dev/null || echo "unknown")
+izinsc="${VPN_KEYGEN_URL:-${REPO}keygen}"
 
-ISP=$(curl -s ipinfo.io/org | cut -d " " -f 2-10 )
-# Status Expired Active
-Info="(${green}Active${NC})"
-Error="(${RED}Expired${NC})"
-today=`date -d "0 days" +"%Y-%m-%d"`
-Exp1=$(curl $izinsc | grep $MYIP | awk '{print $4}')
-if [[ $today < $Exp1 ]]; then
-sts="${Info}"
+if [[ "${LICENSE_CHECK:-0}" == "1" ]]; then
+    username=$(curl -sS "$izinsc" | grep "$MYIP" | awk '{print $2}')
+    expx=$(curl -sS "$izinsc" | grep "$MYIP" | awk '{print $3}')
 else
-sts="${Error}"
+    username="${VPN_AUTHOR:-stanlley_locke}"
+    expx="self-hosted"
 fi
-TIMES="10"
-CHATID="6421074799"
-KEY="8187081872:AAHKIZoMlkKioK-2MekNuEOs-GSCJeg306w"
-URL="https://api.telegram.org/bot$KEY/sendMessage"
-    TIMEZONE=$(printf '%(%H:%M:%S)T')
-    TEXT="
-<code>â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”„1¤7</code>
-<b>WELCOME TO â›·ï¸ðŸ„â˜£ï¸ðŸ¼ðŸ—½â™¾ï¸ðŸ”«ðŸŽ®ðŸ—½ðŸ¥¸ðŸ¥·ðŸ´â€â˜ ï¸ðŸ§‘â„1¤7ðŸ’»ðŸ‚â˜ï¸â˜ï¸â˜ï¸â˜ï¸ðŸ›¸ðŸ›¸ðŸ›¸ðŸ›¸ðŸ›¸ðŸ›¸ðŸ›¸ðŸ›¸ðŸ›¸â˜ï¸â˜ï¸â˜ï¸â˜ï¸â˜ï¸ðŸ›¸ðŸ›¸ðŸ›¸ðŸ›¸â›½â›½â›½â›„1¤7 XENON STORE</b>
-<code>â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”„1¤7</code>
-<code>User     :</code><code>$username</code>
-<code>Domain   :</code><code>$domain</code>
-<code>IPVPS    :</code><code>$MYIP</code>
-<code>ISP      :</code><code>$ISP</code>
-<code>DATE     :</code><code>$DATE</code>
-<code>Time     :</code><code>$TIMEZONE</code>
-<code>Exp Sc.  :</code><code>$exp</code>
-<code>â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”„1¤7</code>
-<b>WELCOME TO â›·ï¸ðŸ„â˜£ï¸ðŸ¼ðŸ—½â™¾ï¸ðŸ”«ðŸŽ®ðŸ—½ðŸ¥¸ðŸ¥·ðŸ´â€â˜ ï¸ðŸ§‘â„1¤7ðŸ’»ðŸ‚â˜ï¸â˜ï¸â˜ï¸â˜ï¸ðŸ›¸ðŸ›¸ðŸ›¸ðŸ›¸ðŸ›¸ðŸ›¸ðŸ›¸ðŸ›¸ðŸ›¸â˜ï¸â˜ï¸â˜ï¸â˜ï¸â˜ï¸ðŸ›¸ðŸ›¸ðŸ›¸ðŸ›¸â›½â›½â›½â›„1¤7 XENON STORE</b>
-<code>â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”„1¤7</code>
-<i>Automatic Notifications From Github</i>
-"'&reply_markup={"inline_keyboard":[[{"text":"á´Ê„1¤7á´…á´‡Ê€","url":"https://wa.me/++254705470210"}]]}' 
+echo "$username" >/usr/bin/user
+echo "$expx" >/usr/bin/e
 
-    curl -s --max-time $TIMES -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null
+vpn_load_config 2>/dev/null || true
+vpn_send_install_notify
 }
 clear
 # Pasang SSL
@@ -541,7 +491,7 @@ print_success "Password SSH"
 function udp_mini(){
 clear
 print_install "Installing Service Limit IP & Quota"
-wget -q https://raw.githubusercontent.com/Ghalihx/scupdate/main/config/fv-tunnel && chmod +x fv-tunnel && ./fv-tunnel
+wget -q "${REPO}ubuntu/fv-tunnel" -O fv-tunnel && chmod +x fv-tunnel && ./fv-tunnel
 
 # // Installing UDP Mini
 mkdir -p /usr/local/kyt/
@@ -911,9 +861,38 @@ print_install "Enable Service"
     clear
 }
 
+function password_default() {
+    print_install "Setting root password"
+    if [[ -z "${ROOT_PASSWORD:-}" ]]; then
+        ROOT_PASSWORD=$(openssl rand -base64 12 | tr -dc 'A-Za-z0-9' | head -c 16)
+        echo "root:${ROOT_PASSWORD}" | chpasswd
+        echo "${ROOT_PASSWORD}" > /root/.default-pass
+        chmod 600 /root/.default-pass
+        print_success "Root password saved to /root/.default-pass"
+    else
+        echo "root:${ROOT_PASSWORD}" | chpasswd
+        print_success "Root password set from ROOT_PASSWORD env"
+    fi
+}
+
+function install_vpn_lib() {
+    print_install "Installing VPN Script library"
+    mkdir -p /usr/local/lib/vpn_script /etc/vpn_script
+    wget -qO /usr/local/lib/vpn_script/common.sh "${REPO}lib/common.sh"
+    wget -qO /usr/local/lib/vpn_script/config.defaults "${REPO}lib/config.defaults"
+    if [[ ! -f /etc/vpn_script/config ]]; then
+        cp /usr/local/lib/vpn_script/config.defaults /etc/vpn_script/config
+    fi
+    wget -qO /usr/local/sbin/health-check "${REPO}health-check.sh"
+    chmod +x /usr/local/lib/vpn_script/common.sh /usr/local/sbin/health-check
+    print_success "VPN Script library"
+}
+
 # Fingsi Install Script
 function instal(){
 clear
+    install_vpn_lib
+    checking_sc
     first_setup
     nginx_install
     base_package
@@ -951,7 +930,9 @@ rm -rf /root/domain
 #sudo hostnamectl set-hostname $user
 secs_to_human "$(($(date +%s) - ${start}))"
 sudo hostnamectl set-hostname $username
-echo -e "${green} Script Successfull Installed"
+echo -e "${green} VPN Script installed successfully — stanlley_locke${NC}"
+echo -e "${YELLOW} Root password (if generated): /root/.default-pass${NC}"
+echo -e "${YELLOW} Run 'menu' after reboot, or 'health-check' to verify services${NC}"
 echo ""
 read -p "$( echo -e "Press ${YELLOW}[ ${NC}${YELLOW}Enter${NC} ${YELLOW}]${NC} For reboot") "
 reboot

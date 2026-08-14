@@ -1,4 +1,6 @@
 #!/bin/bash
+[ -f /usr/local/lib/vpn_script/common.sh ] && source /usr/local/lib/vpn_script/common.sh
+[ -f /usr/local/lib/vpn_script/common.sh ] && source /usr/local/lib/vpn_script/common.sh
 # Edition : Stable Edition V3.0
 # Author  : White Rose
 # (C) Copyright 2024
@@ -18,7 +20,7 @@ clear
 #	 menu
 #else
 
-echo -e "Installing 𝐓𝐂𝐏 𝐁𝐁𝐑 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 XENON 𝐒𝐓𝐎𝐑𝐄"
+echo -e "Installing 𝐓𝐂𝐏 𝐁𝐁𝐑 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 stanlley_locke"
 echo -e "Please Wait BBR Installation Will Starting . . ."
 sleep 5
 clear

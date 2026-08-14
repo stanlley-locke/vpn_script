@@ -1,4 +1,9 @@
 #!/bin/bash
+# Update admin menu scripts — stanlley_locke/vpn_script
+[ -f /usr/local/lib/vpn_script/common.sh ] && source /usr/local/lib/vpn_script/common.sh
+
+REPO="${VPN_REPO:-https://raw.githubusercontent.com/stanlley_locke/vpn_script/main/}"
+
 dateFromServer=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
 biji=`date +"%Y-%m-%d" -d "$dateFromServer"`
 red() { echo -e "\\033[32;1m${*}\\033[0m"; }
@@ -30,25 +35,24 @@ fun_bar() {
     tput cnorm
 }
 res1() {
-    wget https://raw.githubusercontent.com/chikuno/Script/main/ubuntu/menu.zip
-    unzip menu.zip
+    wget -q "${REPO}ubuntu/menu.zip"
+    unzip -o menu.zip
     chmod +x menu/*
-    mv menu/* /usr/local/sbin
-    rm -rf menu
-    rm -rf menu.zip
-    rm -rf update.sh
+    mv menu/* /usr/local/sbin/
+    rm -rf menu menu.zip
+    wget -qO /usr/local/lib/vpn_script/common.sh "${REPO}lib/common.sh"
+    wget -qO /usr/local/sbin/health-check "${REPO}health-check.sh"
+    chmod +x /usr/local/lib/vpn_script/common.sh /usr/local/sbin/health-check
 }
-netfilter-persistent
+netfilter-persistent 2>/dev/null || true
 clear
 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo -e " \e[1;97;101m          UPDATED SCRIPT POWERED BY 🧑‍💻Lemmar🐼🏄⛷️🌊🧑‍💻☣️🥷 Whiterose 🐼🏂🏄⛷️🌊🧑‍💻🗽     \e[0m"
+echo -e " \e[1;97;101m     VPN Script Update — stanlley_locke          \e[0m"
 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo -e ""
-echo -e "  \033[1;91m update script service\033[1;37m"
+echo -e "  \033[1;91m Updating menu scripts\033[1;37m"
 fun_bar 'res1'
 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo -e ""
-read -n 1 -s -r -p "Press [ Enter ] to back on menu"
+read -n 1 -s -r -p "Press [ Enter ] to return to menu"
 menu
-
-###########- COLOR CODE -##############

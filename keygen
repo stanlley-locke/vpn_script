@@ -1,5 +1,7 @@
-### Year-Month-Days IPVPS
-### malcom 2026-11-5 102.210.146.74
-### locke 2025-11-1 108.181.203.83
-### schikuno 2025-11-1 102.210.146.48
-### Fred 2026-2-1 83.147.36.81
+# VPN Script license whitelist — stanlley_locke/vpn_script
+# Format: ### username YYYY-M-D IP_ADDRESS
+# Set LICENSE_CHECK=0 in /etc/vpn_script/config to skip this check entirely.
+#
+# Examples:
+### stanlley_locke 2099-12-31 127.0.0.1
+### demo 2027-12-31 0.0.0.0

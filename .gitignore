@@ -1,0 +1,12 @@
+# Build artifacts
+extracted/
+*.pyc
+__pycache__/
+
+# Secrets (never commit)
+.env
+**/var.txt
+/root/.default-pass
+
+# OS
+.DS_Store
