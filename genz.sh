@@ -1,9 +1,11 @@
 #!/bin/bash
-[ -f /usr/local/lib/vpn_script/common.sh ] && source /usr/local/lib/vpn_script/common.sh
 # VPN Script — Multi-protocol proxy installer
 # Author  : stanlley-locke
 # Repo    : https://github.com/stanlley-locke/vpn_script
-# OS      : Debian 10+ / Ubuntu 18.04–24.04 (x86_64)
+# OS      : Debian 10+ / Ubuntu 18.04–26.04 (x86_64)
+
+export DEBIAN_FRONTEND=noninteractive
+export NEEDRESTART_MODE=a
 
 # Optional env file (set by install.sh or manually)
 for _envf in "${VPN_ENV_FILE:-}" /root/vpn_script.env ./vpn_script.env; do
@@ -101,6 +103,17 @@ clear
 # REPO
 REPO="${VPN_REPO:-https://raw.githubusercontent.com/stanlley-locke/vpn_script/main/}"
 
+# Bootstrap shared library early (checking_sc, vpn_load_config)
+mkdir -p /usr/local/lib/vpn_script /etc/vpn_script
+if [[ ! -f /usr/local/lib/vpn_script/common.sh ]]; then
+    wget -qO /usr/local/lib/vpn_script/common.sh "${REPO}lib/common.sh" 2>/dev/null || true
+fi
+[[ -f /usr/local/lib/vpn_script/common.sh ]] && source /usr/local/lib/vpn_script/common.sh
+
+# Remove broken HAProxy PPA from previous failed installs (Ubuntu 26.04 / resolute)
+rm -f /etc/apt/sources.list.d/*vbernat* /etc/apt/sources.list.d/haproxy.list 2>/dev/null || true
+add-apt-repository --remove -y ppa:vbernat/haproxy-2.0 2>/dev/null || true
+
 ####
 start=$(date +%s)
 secs_to_human() {
@@ -170,30 +183,51 @@ print_install "Create xray directory"
     export IP=$( curl -s https://ipinfo.io/ip/ )
 
 # Change Environment System
+function install_haproxy() {
+    local os_id codename ver_major
+    os_id=$(. /etc/os-release && echo "${ID:-}")
+    codename=$(. /etc/os-release && echo "${VERSION_CODENAME:-}")
+    ver_major=$(. /etc/os-release && echo "${VERSION_ID:-0}" | cut -d. -f1)
+
+    rm -f /etc/apt/sources.list.d/*vbernat* /etc/apt/sources.list.d/haproxy.list 2>/dev/null || true
+    add-apt-repository --remove -y ppa:vbernat/haproxy-2.0 2>/dev/null || true
+    apt-get update -y || true
+    mkdir -p /etc/haproxy
+
+    if [[ "$os_id" == "ubuntu" ]] && { [[ "$codename" == "resolute" ]] || [[ "${ver_major:-0}" -ge 26 ]]; }; then
+        print_install "Installing HAProxy (Ubuntu ${VERSION_ID:-26} — distro package)"
+        apt-get install -y haproxy
+    elif [[ "$os_id" == "ubuntu" ]]; then
+        print_install "Installing HAProxy (Ubuntu PPA with fallback)"
+        if add-apt-repository -y ppa:vbernat/haproxy-2.0 2>/dev/null && apt-get update -y 2>/dev/null; then
+            apt-get install -y 'haproxy=3.0.*' 2>/dev/null || apt-get install -y haproxy
+        else
+            rm -f /etc/apt/sources.list.d/*vbernat* 2>/dev/null
+            apt-get update -y || true
+            apt-get install -y haproxy
+        fi
+    elif [[ "$os_id" == "debian" ]]; then
+        print_install "Installing HAProxy (Debian backports)"
+        curl -fsSL https://haproxy.debian.net/bernat.debian.org.gpg \
+            | gpg --dearmor >/usr/share/keyrings/haproxy.debian.net.gpg 2>/dev/null || true
+        echo deb "[signed-by=/usr/share/keyrings/haproxy.debian.net.gpg]" \
+            http://haproxy.debian.net bookworm-backports-2.8 main \
+            >/etc/apt/sources.list.d/haproxy.list 2>/dev/null || true
+        apt-get update -y || true
+        apt-get install -y haproxy 2>/dev/null || apt-get install -y haproxy
+    else
+        apt-get install -y haproxy || true
+    fi
+    print_success "HAProxy"
+}
+
 function first_setup(){
     timedatectl set-timezone Asia/Jakarta
     echo iptables-persistent iptables-persistent/autosave_v4 boolean true | debconf-set-selections
     echo iptables-persistent iptables-persistent/autosave_v6 boolean true | debconf-set-selections
     print_success "Directory Xray"
-    if [[ $(cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g') == "ubuntu" ]]; then
     echo "Setup Dependencies $(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')"
-    sudo apt update -y
-    apt-get install --no-install-recommends software-properties-common
-    add-apt-repository ppa:vbernat/haproxy-2.0 -y
-    apt-get -y install haproxy=3.0.\*
-elif [[ $(cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g') == "debian" ]]; then
-    echo "Setup Dependencies For OS Is $(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')"
-    curl https://haproxy.debian.net/bernat.debian.org.gpg |
-        gpg --dearmor >/usr/share/keyrings/haproxy.debian.net.gpg
-    echo deb "[signed-by=/usr/share/keyrings/haproxy.debian.net.gpg]" \
-        http://haproxy.debian.net buster-backports-1.8 main \
-        >/etc/apt/sources.list.d/haproxy.list
-    sudo apt-get update
-    apt-get -y install haproxy=1.8.\*
-else
-    echo -e " Your OS Is Not Supported ($(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g') )"
-    exit 1
-fi
+    install_haproxy
 }
 
 # GEO PROJECT
@@ -216,33 +250,27 @@ function nginx_install() {
 # Update and remove packages
 function base_package() {
     clear
-    ########
     print_install "Installing the Required Packages"
-    apt install zip pwgen openssl netcat socat cron bash-completion -y
-    apt install figlet -y
-    apt update -y
-    apt upgrade -y
-    apt dist-upgrade -y
-    systemctl enable chronyd
-    systemctl restart chronyd
-    systemctl enable chrony
-    systemctl restart chrony
-    chronyc sourcestats -v
-    chronyc tracking -v
-    apt install ntpdate -y
-    ntpdate pool.ntp.org
-    apt install sudo -y
-    sudo apt-get clean all
-    sudo apt-get autoremove -y
-    sudo apt-get install -y debconf-utils
-    sudo apt-get remove --purge exim4 -y
-    sudo apt-get remove --purge ufw firewalld -y
-    sudo apt-get install -y --no-install-recommends software-properties-common
+    apt-get update -y || true
+    apt-get install -y zip pwgen openssl netcat-openbsd socat cron bash-completion figlet jq dnsutils || true
+    apt-get install -y chrony || apt-get install -y chronyd || true
+    systemctl enable chrony 2>/dev/null || systemctl enable chronyd 2>/dev/null || true
+    systemctl restart chrony 2>/dev/null || systemctl restart chronyd 2>/dev/null || true
+    chronyc -a makestep 2>/dev/null || true
+    apt-get install -y sudo debconf-utils || true
+    apt-get remove --purge -y exim4 ufw firewalld 2>/dev/null || true
+    apt-get autoremove -y || true
+    apt-get install -y --no-install-recommends software-properties-common || true
     echo iptables-persistent iptables-persistent/autosave_v4 boolean true | debconf-set-selections
     echo iptables-persistent iptables-persistent/autosave_v6 boolean true | debconf-set-selections
-    sudo apt-get install -y speedtest-cli vnstat libnss3-dev libnspr4-dev pkg-config libpam0g-dev libcap-ng-dev libcap-ng-utils libselinux1-dev libcurl4-nss-dev flex bison make libnss3-tools libevent-dev bc rsyslog dos2unix zlib1g-dev libssl-dev libsqlite3-dev sed dirmngr libxml-parser-perl build-essential gcc g++ python htop lsof tar wget curl ruby zip unzip p7zip-full python3-pip libc6 util-linux build-essential msmtp-mta ca-certificates bsd-mailx iptables iptables-persistent netfilter-persistent net-tools openssl ca-certificates gnupg gnupg2 ca-certificates lsb-release gcc shc make cmake git screen socat xz-utils apt-transport-https gnupg1 dnsutils cron bash-completion ntpdate chrony jq openvpn easy-rsa
+    apt-get install -y speedtest-cli vnstat libnss3-dev libnspr4-dev pkg-config libpam0g-dev \
+        libcap-ng-dev libcap-ng-utils libselinux1-dev libcurl4-nss-dev flex bison make libnss3-tools \
+        libevent-dev bc rsyslog dos2unix zlib1g-dev libssl-dev libsqlite3-dev sed dirmngr \
+        libxml-parser-perl build-essential gcc g++ python3 python3-pip htop lsof tar wget curl ruby \
+        zip unzip p7zip-full libc6 util-linux msmtp-mta ca-certificates bsd-mailx iptables \
+        iptables-persistent netfilter-persistent net-tools gnupg gnupg2 lsb-release shc cmake git \
+        screen xz-utils apt-transport-https dnsutils cron bash-completion openvpn easy-rsa || true
     print_success "Required Packages"
-    
 }
 clear
 # Fungsi input domain
@@ -399,24 +427,29 @@ bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release
     curl -s ipinfo.io/city >>/etc/xray/city
     curl -s ipinfo.io/org | cut -d " " -f 2-10 >>/etc/xray/isp
     print_install "Installing Packet Configuration"
+    mkdir -p /etc/haproxy /etc/nginx/conf.d
     wget -O /etc/haproxy/haproxy.cfg "${REPO}ubuntu/haproxy.cfg" >/dev/null 2>&1
     wget -O /etc/nginx/conf.d/xray.conf "${REPO}ubuntu/xray.conf" >/dev/null 2>&1
     wget -O /etc/nginx/conf.d/decoy.conf "${REPO}ubuntu/decoy.conf" >/dev/null 2>&1
     wget -O /etc/nginx/conf.d/subscription.conf "${REPO}ubuntu/subscription.conf" >/dev/null 2>&1
     curl -s "${REPO}ubuntu/nginx.conf" > /etc/nginx/nginx.conf
-    sed -i "s/xxx/${domain}/g" /etc/haproxy/haproxy.cfg
-    sed -i "s/xxx/${domain}/g" /etc/nginx/conf.d/xray.conf
-    sed -i "s/xxx/${domain}/g" /etc/nginx/conf.d/decoy.conf
+    sed -i "s/xxx/${domain}/g" /etc/haproxy/haproxy.cfg 2>/dev/null || true
+    sed -i "s/xxx/${domain}/g" /etc/nginx/conf.d/xray.conf 2>/dev/null || true
+    sed -i "s/xxx/${domain}/g" /etc/nginx/conf.d/decoy.conf 2>/dev/null || true
     # Decoy site + Cloudflare real IP placeholder
     mkdir -p /var/www/html
     wget -qO /var/www/html/index.html "${REPO}ubuntu/decoy/index.html"
     sed -i "s/__DECOY_TITLE__/VPN Script/g" /var/www/html/index.html
     touch /etc/nginx/conf.d/cloudflare-ips.conf
     echo 'set_real_ip_from 127.0.0.1; real_ip_header CF-Connecting-IP;' > /etc/nginx/conf.d/cloudflare-ips.conf
-    # Apply custom paths if configured
-    [[ -x /usr/local/sbin/apply-paths ]] && /usr/local/sbin/apply-paths >/dev/null 2>&1 || true
-    
-cat /etc/xray/xray.crt /etc/xray/xray.key | tee /etc/haproxy/hap.pem
+    # Apply custom paths after nginx+xray configs exist
+    if [[ -x /usr/local/sbin/apply-paths ]] && command -v nginx >/dev/null; then
+        /usr/local/sbin/apply-paths >/dev/null 2>&1 || true
+    fi
+
+if [[ -f /etc/xray/xray.crt && -f /etc/xray/xray.key ]]; then
+    cat /etc/xray/xray.crt /etc/xray/xray.key | tee /etc/haproxy/hap.pem >/dev/null
+fi
 
     # > Set Permission
     chmod +x /etc/systemd/system/runn.service
@@ -585,23 +618,17 @@ clear
 function ins_vnstat(){
 clear
 print_install "Installing Vnstat"
-# setting vnstat
-apt -y install vnstat > /dev/null 2>&1
-/etc/init.d/vnstat restart
-apt -y install libsqlite3-dev > /dev/null 2>&1
-wget https://humdi.net/vnstat/vnstat-2.6.tar.gz
-tar zxvf vnstat-2.6.tar.gz
-cd vnstat-2.6
-./configure --prefix=/usr --sysconfdir=/etc && make && make install
-cd
-vnstat -u -i $NET
-sed -i 's/Interface "'""eth0""'"/Interface "'""$NET""'"/g' /etc/vnstat.conf
-chown vnstat:vnstat /var/lib/vnstat -R
-systemctl enable vnstat
-/etc/init.d/vnstat restart
-/etc/init.d/vnstat status
-rm -f /root/vnstat-2.6.tar.gz
-rm -rf /root/vnstat-2.6
+apt-get install -y vnstat >/dev/null 2>&1 || true
+NET=$(ip -4 route show default 2>/dev/null | awk '{print $5; exit}')
+[[ -z "$NET" ]] && NET=$(ip -o link show | awk -F': ' '{print $2}' | grep -v lo | head -1)
+[[ -z "$NET" ]] && NET=eth0
+vnstat -u -i "$NET" 2>/dev/null || true
+if [[ -f /etc/vnstat.conf ]]; then
+    sed -i "s/^Interface .*/Interface \"$NET\"/" /etc/vnstat.conf 2>/dev/null || true
+fi
+chown -R vnstat:vnstat /var/lib/vnstat 2>/dev/null || true
+systemctl enable vnstat 2>/dev/null || true
+systemctl restart vnstat 2>/dev/null || true
 print_success "Vnstat"
 }
 
@@ -925,7 +952,7 @@ function install_vpn_lib() {
         mkdir -p /etc/vpn_script
         cp /usr/local/lib/vpn_script/config.defaults /etc/vpn_script/config
     fi
-    for script in health-check cf-setup apply-routing apply-paths cert-renew reload-stack httpcustom-export httpcustom-export-v5 httpc-lib reality-setup cf-tunnel sub-manage apply-env preflight ec2-install; do
+    for script in health-check cf-setup apply-routing apply-paths cert-renew reload-stack httpcustom-export httpcustom-export-v5 httpc-lib reality-setup cf-tunnel sub-manage apply-env preflight ec2-install repair-install; do
         src="${script}.sh"
         [[ "$script" == "httpc-lib" ]] && src="httpcustom.sh" && script_dest="httpc-lib" || script_dest="$script"
         [[ "$script" == "httpcustom-export-v5" ]] && src="httpcustom-export-v5.sh"
@@ -941,26 +968,33 @@ function install_vpn_lib() {
     for profile in global split adblock direct; do
         wget -qO "/etc/xray/routing/${profile}.json" "${REPO}ubuntu/routing/${profile}.json"
     done
-    chmod +x /usr/local/sbin/{health-check,cf-setup,apply-routing,apply-paths,cert-renew,reload-stack,httpcustom-export,httpcustom-export-v5,httpc-lib,reality-setup,cf-tunnel,sub-manage,apply-env,preflight,ec2-install} 2>/dev/null || true
+    chmod +x /usr/local/sbin/{health-check,cf-setup,apply-routing,apply-paths,cert-renew,reload-stack,httpcustom-export,httpcustom-export-v5,httpc-lib,reality-setup,cf-tunnel,sub-manage,apply-env,preflight,ec2-install,repair-install} 2>/dev/null || true
     systemctl daemon-reload 2>/dev/null || true
     systemctl enable subscription 2>/dev/null || true
     systemctl restart subscription 2>/dev/null || true
-    [[ -f /etc/vpn_script/subscription.token ]] || \
-        python3 /usr/local/lib/vpn_script/sub_server.py generate-token 2>/dev/null || true
     print_success "VPN Script library"
+}
+
+function finalize_subscription() {
+    [[ -f /usr/local/lib/vpn_script/sub_server.py ]] || return 0
+    if [[ -f /etc/xray/domain ]] && [[ -s /etc/xray/domain ]]; then
+        python3 /usr/local/lib/vpn_script/sub_server.py generate-token 2>/dev/null || true
+    fi
 }
 
 # Fingsi Install Script
 function instal(){
 clear
     install_vpn_lib
+    [[ -f /usr/local/lib/vpn_script/common.sh ]] && source /usr/local/lib/vpn_script/common.sh
     [[ -f /root/vpn_script.env ]] && /usr/local/sbin/apply-env /root/vpn_script.env 2>/dev/null || true
-    checking_sc
+    checking_sc 2>/dev/null || true
     first_setup
     nginx_install
     base_package
     make_folder_xray
     pasang_domain
+    finalize_subscription
     password_default
     pasang_ssl
     install_xray

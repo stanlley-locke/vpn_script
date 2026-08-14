@@ -16,12 +16,18 @@ if [[ "${EUID}" -ne 0 ]]; then
     exit 1
 fi
 
+export DEBIAN_FRONTEND=noninteractive
+
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo " VPN Script EC2 Install — vps.stanlleylocke.dev"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
+# Clean broken HAProxy PPA from prior attempts
+rm -f /etc/apt/sources.list.d/*vbernat* /etc/apt/sources.list.d/haproxy.list 2>/dev/null || true
+add-apt-repository --remove -y ppa:vbernat/haproxy-2.0 2>/dev/null || true
+
 apt-get update -qq
-apt-get install -y wget curl dnsutils jq
+apt-get install -y wget curl dnsutils jq software-properties-common
 
 if [[ ! -f "$ENV_DEST" ]]; then
     echo "Downloading environment file..."

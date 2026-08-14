@@ -37,7 +37,12 @@ def get_token():
 
 def get_domain():
     if os.path.isfile(DOMAIN_FILE):
-        return open(DOMAIN_FILE).read().strip()
+        d = open(DOMAIN_FILE).read().strip()
+        if d:
+            return d
+    cfg = load_config()
+    if cfg.get("CF_DOMAIN"):
+        return cfg["CF_DOMAIN"]
     return "localhost"
 
 
