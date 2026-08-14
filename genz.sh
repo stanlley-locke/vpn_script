@@ -333,7 +333,7 @@ bash -c "$(wget -qO- https://github.com/XTLS/Xray-install/raw/main/install-relea
     wget -qO /var/www/html/index.html "${REPO}ubuntu/decoy/index.html"
     sed -i "s/__DECOY_TITLE__/VPN Script/g" /var/www/html/index.html
     touch /etc/nginx/conf.d/cloudflare-ips.conf
-    echo 'set_real_ip_from 127.0.0.1; real_ip_header CF-Connecting-IP;' > /etc/nginx/conf.d/cloudflare-ips.conf
+    echo 'set_real_ip_from 127.0.0.1;' > /etc/nginx/conf.d/cloudflare-ips.conf
     # Apply custom paths after nginx+xray configs exist
     if [[ -x /usr/local/sbin/apply-paths ]] && command -v nginx >/dev/null; then
         /usr/local/sbin/apply-paths >/dev/null 2>&1 || true

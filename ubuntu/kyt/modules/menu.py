@@ -52,8 +52,9 @@ Button.inline(" OTHER SETTING ","setting")],
 **» 🎯XRAY TROJAN :** `{trj.strip()}` __account__
 ━━━━━━━━━━━━━━━━━━━━━━━ 
 """
-		x = await event.edit(msg,buttons=inline)
-		if not x:
-			await event.reply(msg,buttons=inline)
+		try:
+			await event.edit(msg, buttons=inline)
+		except:
+			await event.reply(msg, buttons=inline)
 
 

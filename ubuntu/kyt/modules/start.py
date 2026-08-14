@@ -40,9 +40,10 @@ Button.url("README","https://github.com/stanlley-locke/vpn_script#readme")]]
 ✅ **» IP VPS :** `{ipsaya.strip()}`
 ━━━━━━━━━━━━━━━━━━━━━━━
 """
-		x = await event.edit(msg,buttons=inline)
-		if not x:
-			await event.reply(msg,buttons=inline)
+		try:
+			await event.edit(msg, buttons=inline)
+		except:
+			await event.reply(msg, buttons=inline)
 
 
 
